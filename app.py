@@ -236,7 +236,8 @@ if submitted:
     )
 
     # ✅ 11. Generate Personalized Advice Using OpenAI LLM
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    #openai.api_key = os.getenv("OPENAI_API_KEY")
+    openai.api_key = st.secrets["openai_api_key"]
     if openai.api_key is None:
         st.error("OPENAI_API_KEY is not set in the environment!")
     else:
