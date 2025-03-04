@@ -251,7 +251,8 @@ if submitted:
         if i == int(user_cluster):
             st.markdown(f"**:large_orange_diamond: {label}** (your level)", unsafe_allow_html=True)
         else:
-            st.markdown(f":black_small_square: {label}", unsafe_allow_html=True)
+            st.markdown(f'<span style="color: grey;">◾ {label}</span>', unsafe_allow_html=True)
+            #st.markdown(f":black_small_square: {label}", unsafe_allow_html=True)
 
     # ✅ 11. Generate Personalized Advice Using OpenAI LLM
     # Ensure API Key is available
