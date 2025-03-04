@@ -244,7 +244,7 @@ if submitted:
     default_cluster_color = "#BDC3C7"
 
     # Generate HTML for displaying all clusters in a **vertical format**
-    cluster_html = f"""
+    cluster_html = """
         <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
     """
 
