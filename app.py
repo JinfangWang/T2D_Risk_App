@@ -249,10 +249,15 @@ if submitted:
     for i, label in enumerate(cluster_labels):
         # Highlight only the user’s assigned cluster with bold text and color formatting
         if i == int(user_cluster):
-            st.markdown(f"**:large_orange_diamond: {label}** (your level)", unsafe_allow_html=True)
+            st.markdown(
+                f'<span style="background-color:{cluster_colors[i]}; '
+                f'padding: 6px 12px; border-radius:6px; color:white; font-weight:bold;">'
+                f'🏥 {label} (your level)</span>',
+                unsafe_allow_html=True
+            )
+            #st.markdown(f"**:large_orange_diamond: {label}** (your level)", unsafe_allow_html=True)
         else:
             st.markdown(f'<span style="color: grey;">◾ {label}</span>', unsafe_allow_html=True)
-            #st.markdown(f":black_small_square: {label}", unsafe_allow_html=True)
 
     # ✅ 11. Generate Personalized Advice Using OpenAI LLM
     # Ensure API Key is available
