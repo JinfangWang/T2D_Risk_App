@@ -155,8 +155,8 @@ if submitted:
     # ✅ 6. Convert User Input to DataFrame
     try:
         user_data = pd.DataFrame({
-            "Fasting_Blood_Glucose": [float(fbg_input)],
-            "HbA1c": [float(hba1c_input)],
+           # "Fasting_Blood_Glucose": [float(fbg_input)],
+           # "HbA1c": [float(hba1c_input)],
             "Systolic_BP": [float(systolic_input)],
             "Diastolic_BP": [float(diastolic_input)],
             "BMI": [float(bmi_input)],
