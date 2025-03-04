@@ -244,7 +244,7 @@ if submitted:
     default_cluster_color = "#BDC3C7"
 
     # Generate HTML for displaying all clusters in a **vertical format**
-    cluster_html = """
+    cluster_html = f"""
         <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
     """
 
@@ -270,7 +270,7 @@ if submitted:
     cluster_html += "</div>"
 
     # Display clusters in Streamlit
-    st.markdown(cluster_html, unsafe_allow_html=True)
+    st.markdown(f"{cluster_html}", unsafe_allow_html=True)
 
     # ✅ 11. Generate Personalized Advice Using OpenAI LLM
     # Ensure API Key is available
