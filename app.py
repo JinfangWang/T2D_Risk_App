@@ -305,6 +305,9 @@ if submitted:
             messages=[{"role": "user", "content": prompt}],
             temperature=0.3
         )
+
+        st.write("## 🩺 Personalized Health Advice")
+
         st.markdown(
             f"""
             <div class="advice-box">
