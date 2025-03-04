@@ -244,8 +244,9 @@ if submitted:
     default_cluster_color = "#BDC3C7"
 
     # Generate HTML for displaying all clusters in a **vertical format**
-    cluster_html = '<div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">'
-
+    cluster_html = """
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    """
 
     for i, label in enumerate(cluster_labels):
         # Highlight only the user’s assigned cluster
@@ -258,7 +259,8 @@ if submitted:
                     border-radius:8px; 
                     text-align:center; 
                     color:white; 
-                    width: 250px; 
+                    min-width: 220px; 
+                    margin: 4px 0px; 
                     font-weight:{font_weight}; 
                     font-size:16px;">
             🏥 {label}
