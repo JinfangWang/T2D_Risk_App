@@ -246,8 +246,6 @@ if submitted:
 
     # ✅ 11. Generate Personalized Advice Using OpenAI LLM
     # Ensure API Key is available
-    st.write("🔍 Secrets Content:", st.secrets)
-
     if "OPENAI_API_KEY" not in st.secrets:
         st.error("🚨 OpenAI API Key is missing! Add it in Streamlit Secrets.")
     else:
