@@ -270,7 +270,8 @@ if submitted:
     cluster_html += "</div>"
 
     # Display clusters in Streamlit
-    st.markdown(f"{cluster_html}", unsafe_allow_html=True)
+    st.write(cluster_html)  # Debugging step
+    st.markdown(cluster_html, unsafe_allow_html=True)
 
     # ✅ 11. Generate Personalized Advice Using OpenAI LLM
     # Ensure API Key is available
