@@ -113,7 +113,7 @@ with st.form("user_input_form"):
     with col1:
         fbg_input = st.text_input("Fasting Blood Glucose (mg/dL)", "100")
     with col2:
-        hba1c_input = st.text_input("HbA1c (%)", "5.5")
+        hba1c_input = st.text_input("HbA1c (%)", "5.4")
     with col3:
         systolic_input = st.text_input("Systolic BP (mmHg)", "120")
     
@@ -121,13 +121,13 @@ with st.form("user_input_form"):
     with col1:
         diastolic_input = st.text_input("Diastolic BP (mmHg)", "80")
     with col2:
-        bmi_input = st.text_input("BMI", "25.0")
+        bmi_input = st.text_input("BMI", "24.0")
     with col3:
-        triglycerides_input = st.text_input("Triglycerides (mg/dL)", "150")
+        triglycerides_input = st.text_input("Triglycerides (mg/dL)", "130")
     
     col1, col2, col3 = st.columns(3)
     with col1:
-        hdl_input = st.text_input("HDL Cholesterol (mg/dL)", "50")
+        hdl_input = st.text_input("HDL Cholesterol (mg/dL)", "55")
     with col2:
         ldl_input = st.text_input("LDL Cholesterol (mg/dL)", "100")
     with col3:
