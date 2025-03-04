@@ -226,23 +226,46 @@ if submitted:
                       "Moderate metabolic", 
                       "Severe metabolic"]
 
-    cluster_colors = [
-        "#2ECC71", "#F1C40F", "#F39C12", "#D35400",
-        "#E74C3C", "#C0392B", "#900C3F"
-    ]
-
     # Get the descriptive cluster name
     user_cluster_name = cluster_labels[int(user_cluster)]
-    user_cluster_color = cluster_colors[int(user_cluster)]
 
-    st.markdown(
-        f"""
-        <div style="background-color:{user_cluster_color}; padding:10px; border-radius:10px; text-align:center; color:white;">
-            🏥 Your Health Group: <b>{user_cluster_name}</b>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # Define severity-based colors (0: healthy -> 6: high risk)
+    cluster_colors = [
+        "#2ECC71",  # Green  - Healthy (Low Risk)
+        "#F1C40F",  # Yellow - Mild Dyslipidemia
+        "#F39C12",  # Orange - Dyslipidemia
+        "#D35400",  # Dark Orange - Hypertensive
+        "#E74C3C",  # Red - Mild Metabolic
+        "#C0392B",  # Dark Red - Moderate Metabolic
+        "#900C3F"   # Deep Red - Severe Metabolic (High Risk)
+        ]
+
+    # Default all clusters to grey
+    default_cluster_color = "#BDC3C7"
+
+    # Generate HTML for displaying all clusters
+    cluster_html = '<div style="display: flex; gap: 10px; justify-content: center;">'
+
+    for i, label in enumerate(cluster_labels):
+        color = cluster_colors[i] if i == int(user_cluster) else default_cluster_color  # Highlight only the user’s cluster
+        font_weight = "bold" if i == int(user_cluster) else "normal"
+
+        cluster_html += f"""
+            <div style="background-color:{color}; 
+                    padding:10px; 
+                    border-radius:10px; 
+                    text-align:center; 
+                    color:white; 
+                    min-width: 140px; 
+                    font-weight:{font_weight};">
+            🏥 {label}
+            </div>
+        """
+
+    cluster_html += "</div>"
+
+    # Display clusters in Streamlit
+    st.markdown(cluster_html, unsafe_allow_html=True)
 
     # ✅ 11. Generate Personalized Advice Using OpenAI LLM
     # Ensure API Key is available
