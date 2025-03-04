@@ -243,21 +243,24 @@ if submitted:
     # Default all clusters to grey
     default_cluster_color = "#BDC3C7"
 
-    # Generate HTML for displaying all clusters
-    cluster_html = '<div style="display: flex; gap: 10px; justify-content: center;">'
+    # Generate HTML for displaying all clusters in a **vertical format**
+    cluster_html = '<div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">'
+
 
     for i, label in enumerate(cluster_labels):
-        color = cluster_colors[i] if i == int(user_cluster) else default_cluster_color  # Highlight only the user’s cluster
+        # Highlight only the user’s assigned cluster
+        color = cluster_colors[i] if i == int(user_cluster) else default_cluster_color  
         font_weight = "bold" if i == int(user_cluster) else "normal"
 
         cluster_html += f"""
             <div style="background-color:{color}; 
-                    padding:10px; 
-                    border-radius:10px; 
+                    padding:12px; 
+                    border-radius:8px; 
                     text-align:center; 
                     color:white; 
-                    min-width: 140px; 
-                    font-weight:{font_weight};">
+                    width: 250px; 
+                    font-weight:{font_weight}; 
+                    font-size:16px;">
             🏥 {label}
             </div>
         """
