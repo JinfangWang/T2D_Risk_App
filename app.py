@@ -208,14 +208,13 @@ if submitted:
     )
 
     # Define cluster labels
-    cluster_labels = [
-        "Healthy",
-        "Early Imbalance",
-        "Overweight Mild",
-        "Hypertensive Liver",
-        "Obese Metabolic",
-        "Severe Metabolic",
-        "Severe Obesity"]
+    cluster_labels = ["Healthy", 
+                      "Mild dyslipidemia", 
+                      "Dyslipidemia", 
+                      "Hypertensive", 
+                      "Mild metabolic", 
+                      "Moderate metabolic", 
+                      "Severe metabolic"]
 
     cluster_colors = [
         "#2ECC71", "#F1C40F", "#F39C12", "#D35400",
