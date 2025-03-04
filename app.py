@@ -186,7 +186,17 @@ if submitted:
     
     # ✅ 9. Find the Closest Match Using Euclidean Distance
     feature_columns = [col for col in df_clusters.columns if col not in ['加入者id', 'Cluster_LIME_Ordered']]
-    X_scaled = scaler.transform(df_clusters.drop(columns=['加入者id', 'Cluster_LIME_Ordered']))
+
+    # Ensure that df_clusters only contains the features used during model training
+    expected_features = ['Systolic_BP', 'Diastolic_BP', 'BMI', 'Triglycerides', 'HDL_Cholesterol',
+    'LDL_Cholesterol', 'AST(GOT)', 'ALT(GPT)', 'Gamma_GTP', 'eGFR', 'Age', 'Sex']
+
+    # Drop any extra columns that were not used during training
+    df_clusters_filtered = df_clusters[expected_features]
+
+    # Now, transform the filtered data
+    X_scaled = scaler.transform(df_clusters_filtered)
+
     distances = cdist(X_user_scaled, X_scaled, metric='euclidean')
     closest_idx = np.argmin(distances)
     matched_individual = df_clusters.iloc[closest_idx]
