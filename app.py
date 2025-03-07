@@ -9,7 +9,13 @@ from sklearn.exceptions import NotFittedError
 from scipy.spatial.distance import cdist
 from PIL import Image
 
-# 0) Setup session state properly
+###################################
+# 0) Set Page Configuration First
+###################################
+st.set_page_config(layout="wide")  # Ensure this is the first Streamlit command
+
+
+# 1) Setup session state properly
 ###################################
 if 'language' not in st.session_state:
     st.session_state['language'] = None  # Ensure language state is properly initialized
@@ -32,7 +38,6 @@ st.markdown(
 ###################################
 # 0) Setup session state
 ###################################
-st.set_page_config(layout="wide")  # Make sidebar narrower
 st.sidebar.markdown("<style> div[data-testid='stSidebar'] {width: 200px !important;} </style>", unsafe_allow_html=True)
 
 st.sidebar.title("🌐 Select Language")
