@@ -48,7 +48,6 @@ texts = {
 ###################################
 # 2) Always Show Language Buttons at the Top
 ###################################
-st.markdown("<h3 style='text-align: center;'>🌍 Choose Your Language / 言語 / 语言</h3>", unsafe_allow_html=True)
 
 # Display 3 horizontal buttons
 col1, col2, col3 = st.columns(3)
