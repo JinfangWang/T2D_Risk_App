@@ -121,57 +121,58 @@ with st.form("user_input_form"):
     with col1:
         diastolic_input = st.text_input("Diastolic BP (mmHg)", "80")
     with col2:
-        bmi_input = st.text_input("BMI", "24.0")
+        height_input = st.text_input("Height (cm)", "170")
     with col3:
+        weight_input = st.text_input("Weight (kg)", "70")
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
         triglycerides_input = st.text_input("Triglycerides (mg/dL)", "130")
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
+    with col2:
         hdl_input = st.text_input("HDL Cholesterol (mg/dL)", "55")
-    with col2:
+    with col3:
         ldl_input = st.text_input("LDL Cholesterol (mg/dL)", "100")
-    with col3:
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
         ast_input = st.text_input("AST (GOT) (U/L)", "30")
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
+    with col2:
         alt_input = st.text_input("ALT (GPT) (U/L)", "30")
-    with col2:
+    with col3:
         gamma_input = st.text_input("Gamma-GTP (U/L)", "25")
-    with col3:
-        egfr_input = st.text_input("eGFR (mL/min/1.73m²)", "90")
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     with col1:
-        age_input = st.text_input("Age", "50")
+        egfr_input = st.text_input("eGFR (mL/min/1.73m²)", "90")
     with col2:
-        sex = st.selectbox("Sex", ["Male", "Female"])
-    with col3:
-        optional_metric = st.text_input("Optional Metric (if any)", "")
+        age_input = st.text_input("Age", "50")
+    
+    sex = st.selectbox("Sex", ["Male", "Female"])
     
     submitted = st.form_submit_button("Submit")
 
 if submitted:
     # ✅ 6. Convert User Input to DataFrame
     try:
+        # 🔹 Compute BMI dynamically
+        bmi_value = float(weight_input) / ((float(height_input) / 100) ** 2)
+        
         user_data = pd.DataFrame({
-           # "Fasting_Blood_Glucose": [float(fbg_input)],
-           # "HbA1c": [float(hba1c_input)],
-            "Systolic_BP": [float(systolic_input)],
-            "Diastolic_BP": [float(diastolic_input)],
-            "BMI": [float(bmi_input)],
-            "Triglycerides": [float(triglycerides_input)],
-            "HDL_Cholesterol": [float(hdl_input)],
-            "LDL_Cholesterol": [float(ldl_input)],
-            "AST(GOT)": [float(ast_input)],
-            "ALT(GPT)": [float(alt_input)],
-            "Gamma_GTP": [float(gamma_input)],
-            "eGFR": [float(egfr_input)],
-            "Age": [int(float(age_input.strip())) if age_input.strip() else None],
+            "Systolic_BP": [float(systolic_input.strip())],
+            "Diastolic_BP": [float(diastolic_input.strip())],
+            "BMI": [bmi_value],  # 🔹 Using computed BMI
+            "Triglycerides": [float(triglycerides_input.strip())],
+            "HDL_Cholesterol": [float(hdl_input.strip())],
+            "LDL_Cholesterol": [float(ldl_input.strip())],
+            "AST(GOT)": [float(ast_input.strip())],
+            "ALT(GPT)": [float(alt_input.strip())],
+            "Gamma_GTP": [float(gamma_input.strip())],
+            "eGFR": [float(egfr_input.strip())],
+            "Age": [int(float(age_input.strip()))],  # 🔹 Ensure proper integer conversion
             "Sex": [1 if sex == "Male" else 0]
         })
     except ValueError:
-        st.error("Please enter valid numeric values.")
+        st.error("🚨 Please enter only numeric values in all input fields.")
         st.stop()
     
     # ✅ 7. Standardize User Data
