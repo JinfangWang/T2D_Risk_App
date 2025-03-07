@@ -9,16 +9,26 @@ from sklearn.exceptions import NotFittedError
 from scipy.spatial.distance import cdist
 from PIL import Image
 
-###################################
-# 0) Set Page Configuration First
-###################################
-st.set_page_config(layout="wide")  # Ensure this is the first Streamlit command
-
 
 # 1) Setup session state properly
 ###################################
 if 'language' not in st.session_state:
     st.session_state['language'] = None  # Ensure language state is properly initialized
+
+###################################
+# 1) Language Buttons at Top-Right
+###################################
+col1, col2, col3, col4 = st.columns([5, 1, 1, 1])  # Adjust widths as needed
+
+with col2:
+    if st.button("English"):
+        st.session_state['language'] = 'English'
+with col3:
+    if st.button("日本語"):
+        st.session_state['language'] = 'Japanese'
+with col4:
+    if st.button("中文"):
+        st.session_state['language'] = 'Chinese'
 
 if st.session_state['language'] is None:
     st.markdown(
@@ -45,7 +55,7 @@ if st.session_state['language'] is None:
     )
 
 # sidebar
-#lang = st.session_state['language']
+lang = st.session_state['language']
 
 ###################################
 # 1) Minimal text in each language
