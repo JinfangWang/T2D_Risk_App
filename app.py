@@ -9,6 +9,11 @@ from sklearn.exceptions import NotFittedError
 from scipy.spatial.distance import cdist
 from PIL import Image
 
+# 0) Setup session state properly
+###################################
+if 'language' not in st.session_state:
+    st.session_state['language'] = None  # Ensure language state is properly initialized
+
 st.markdown(
     """
     ## 🩺 Personalized Diabetes Risk Assessment
@@ -27,10 +32,6 @@ st.markdown(
 ###################################
 # 0) Setup session state
 ###################################
-if st.session_state['language'] is None:
-    st.stop()
-lang = st.session_state['language']  # Ensures lang is always valid
-
 # Create an empty space at the top for buttons
 st.markdown(
     """
