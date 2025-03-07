@@ -9,13 +9,61 @@ from sklearn.exceptions import NotFittedError
 from scipy.spatial.distance import cdist
 from PIL import Image
 
-#############################
-#     1) MULTILANGUAGE UI
-#############################
-
-# Default to English if not set
+###################################
+# 0) Setup session state
+###################################
 if 'language' not in st.session_state:
-    st.session_state['language'] = 'English'
+    st.session_state['language'] = None  # Start with no language chosen
+
+###################################
+# 1) Minimal text in each language
+###################################
+texts = {
+    'English': {
+        'title': "Understand Your Diabetes Risk",
+        'description': (
+            "Enter your health details to assess your Type 2 Diabetes risk and "
+            "get personalized health advice based on advanced machine learning analysis."
+        ),
+        'button': "English"
+    },
+    'Japanese': {
+        'title': "糖尿病リスクを理解する",
+        'description': (
+            "2型糖尿病のリスクを評価し、高度な機械学習分析に基づくパーソナライズされた "
+            "健康アドバイスを取得するために、あなたの健康情報を入力してください。"
+        ),
+        'button': "日本語"
+    },
+    'Chinese': {
+        'title': "了解您的糖尿病风险",
+        'description': (
+            "输入您的健康信息以评估2型糖尿病风险，并根据先进的机器学习分析 "
+            "获得个性化的健康建议。"
+        ),
+        'button': "中文"
+    }
+}
+
+###################################
+# 2) If no language chosen -> show minimal page
+###################################
+if st.session_state['language'] is None:
+    st.markdown("<h2 style='text-align: center;'>Choose Your Language / 言語 / 语言</h2>", unsafe_allow_html=True)
+
+    # Display 3 horizontal buttons
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button(texts['English']['button']):
+            st.session_state['language'] = 'English'
+    with col2:
+        if st.button(texts['Japanese']['button']):
+            st.session_state['language'] = 'Japanese'
+    with col3:
+        if st.button(texts['Chinese']['button']):
+            st.session_state['language'] = 'Chinese'
+
+    st.stop()  # Stop so we don't show the rest of the form
 
 # Minimal top page with 3 language selection
 st.markdown("""
@@ -34,32 +82,20 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Show language buttons at the top
-st.write("""
-<div class="top-buttons">
-    <form action="?lang=English" method="get" style="display:inline;">
-        <button name="lang" type="submit" value="English">English</button>
-    </form>
-    <form action="?lang=Japanese" method="get" style="display:inline;">
-        <button name="lang" type="submit" value="Japanese">日本語</button>
-    </form>
-    <form action="?lang=Chinese" method="get" style="display:inline;">
-        <button name="lang" type="submit" value="Chinese">中文</button>
-    </form>
-</div>
-""", unsafe_allow_html=True)
-
-# Capture new language from query params
-query_params = st.query_params
-if 'lang' in query_params:
-    chosen_lang = query_params['lang']
-    # Handle case where st.query_params might return a list
-    if isinstance(chosen_lang, list):
-        chosen_lang = chosen_lang[0]
-    if chosen_lang in ['English', 'Japanese', 'Chinese']:
-        st.session_state['language'] = chosen_lang
-
+###################################
+# 3) If user selected a language
+###################################
 lang = st.session_state['language']
+title = texts[lang]['title']
+description = texts[lang]['description']
+
+st.markdown(f"<h2 style='text-align: center;'>{title}</h2>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align: center;'>{description}</p>", unsafe_allow_html=True)
+
+###################################
+# 4) Normal app logic below
+###################################
+
 
 # Minimal top page text in selected language
 def render_top_info(language):
