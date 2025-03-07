@@ -25,14 +25,14 @@ try:
     # Open the image
     image = Image.open("predictive_clustering_with_diseases_20241226_ADA.jpg")
     # Resize (only if you want to change the dimensions)
-    image = image.resize((500, 500))
+    image = image.resize((500, 400))
     # Now display it in Streamlit
     st.image(image)
 except FileNotFoundError:
     st.error("Image file not found. Make sure the file path is correct.")
 except Exception as e:
     st.error(f"Error opening image: {e}")
-    
+
 st.markdown(
     """
     ## 🩺 AI-powered Personalized Diabetes Risk Assessment
