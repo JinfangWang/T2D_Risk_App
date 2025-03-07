@@ -30,8 +30,9 @@ st.markdown(
 # 0) Setup session state
 ###################################
 
-if 'language' not in st.session_state:
-    st.session_state['language'] = None  # Start with no language chosen
+if st.session_state['language'] is None:
+    st.stop()
+lang = st.session_state['language']  # Ensures lang is always valid
 
 with st.container():
     st.markdown(
