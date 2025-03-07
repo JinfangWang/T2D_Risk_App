@@ -16,11 +16,9 @@ st.markdown(
     you will receive an AI-based evaluation of your **Type 2 Diabetes risk** and 
     **personalized health advice**.
 
-    ## 🩺 パーソナライズされた糖尿病リスク評価
     AIを活用した糖尿病リスク評価ツールへようこそ。健康データを入力することで、
     **2型糖尿病のリスク評価** と **あたなの健康アドバイス** を受け取ることができます。
 
-    ## 🩺 个性化糖尿病风险评估
     欢迎使用我们的AI驱动糖尿病风险评估工具。通过输入您的健康数据，
     您将获得**2型糖尿病的风险评估**以及**个性化的健康建议**。
     """
@@ -29,36 +27,45 @@ st.markdown(
 ###################################
 # 0) Setup session state
 ###################################
-
 if st.session_state['language'] is None:
     st.stop()
 lang = st.session_state['language']  # Ensures lang is always valid
 
-with st.container():
-    st.markdown(
-        """
-        <style>
-        .lang-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    
-    col1, col2, col3 = st.columns([8, 1, 1])  # Left spacing, then buttons
+# Create an empty space at the top for buttons
+st.markdown(
+    """
+    <style>
+    .top-right-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-right: 20px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-    with col2:
-        if st.button("English"):
-            st.session_state['language'] = 'English'
-    with col3:
-        if st.button("日本語"):
-            st.session_state['language'] = 'Japanese'
-    with col3:
-        if st.button("中文"):
-            st.session_state['language'] = 'Chinese'
+# Create columns to structure the layout
+col1, col2, col3, col4 = st.columns([6, 1, 1, 1])  # Left spacing, then buttons
+
+# Place buttons on the top-right
+with col2:
+    if st.button("English"):
+        st.session_state['language'] = 'English'
+with col3:
+    if st.button("日本語"):
+        st.session_state['language'] = 'Japanese'
+with col4:
+    if st.button("中文"):
+        st.session_state['language'] = 'Chinese'
+
+# Stop execution until language is selected
+if st.session_state['language'] is None:
+    st.stop()
+
+# Now safely assign lang
+lang = st.session_state['language']
 
 ###################################
 # 1) Minimal text in each language
