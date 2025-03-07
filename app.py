@@ -22,7 +22,7 @@ texts = {
     'English': {
         'title': "Understand Your Diabetes Risk",
         'description': (
-            "Enter your health details to assess your Type 2 Diabetes risk and "
+            "Enter your health metrics to assess your Type 2 Diabetes risk and "
             "get personalized health advice based on advanced machine learning analysis."
         ),
         'button': "English"
@@ -30,8 +30,8 @@ texts = {
     'Japanese': {
         'title': "糖尿病リスクを理解する",
         'description': (
-            "2型糖尿病のリスクを評価し、高度な機械学習分析に基づくパーソナライズされた "
-            "健康アドバイスを取得するために、あなたの健康情報を入力してください。"
+            "高度な機械学習・人工知能による、あなたの2型糖尿病のリスクを評価し、 "
+            "健康アドバイスを得るために、あなたの健康情報を入力してください。"
         ),
         'button': "日本語"
     },
@@ -70,7 +70,6 @@ if st.session_state['language'] is None:
 lang = st.session_state['language']
 st.markdown(f"<h2 style='text-align: center;'>{texts[lang]['title']}</h2>", unsafe_allow_html=True)
 st.markdown(f"<p style='text-align: center;'>{texts[lang]['description']}</p>", unsafe_allow_html=True)
-
 
 
 ###################################
@@ -402,7 +401,7 @@ if submitted:
         👨‍⚕️ **Consult a doctor before making major health changes.**  
         """
 
-        response = openai.ChatCompletion.create(
+        response = openai.chat.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.3
