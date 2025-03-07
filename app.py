@@ -38,16 +38,13 @@ st.markdown(
 ###################################
 # 0) Setup session state
 ###################################
-st.sidebar.markdown("<style> div[data-testid='stSidebar'] {width: 80px !important;} </style>", unsafe_allow_html=True)
-
-st.sidebar.title("🌐 Select Language")
-
-if st.sidebar.button("English"):
-    st.session_state['language'] = 'English'
-if st.sidebar.button("日本語"):
-    st.session_state['language'] = 'Japanese'
-if st.sidebar.button("中文"):
-    st.session_state['language'] = 'Chinese'
+with st.sidebar.expander("🌐 Language", expanded=True):
+    if st.button("English"):
+        st.session_state['language'] = 'English'
+    if st.button("日本語"):
+        st.session_state['language'] = 'Japanese'
+    if st.button("中文"):
+        st.session_state['language'] = 'Chinese'
 
 # Stop execution until language is selected
 if st.session_state['language'] is None:
