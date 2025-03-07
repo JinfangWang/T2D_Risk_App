@@ -48,13 +48,15 @@ texts = {
 ###################################
 # 2) Always Show Language Buttons at the Top
 ###################################
-col1, col2 = st.columns([5, 1])  # Adjust proportions for right alignment
+col1, col2, col3, col4 = st.columns([6, 1, 1, 1])  # Left spacing, then 3 buttons
 
-with col2:  # Right-aligned buttons
+with col2:
     if st.button(texts['English']['button']):
         st.session_state['language'] = 'English'
+with col3:
     if st.button(texts['Japanese']['button']):
         st.session_state['language'] = 'Japanese'
+with col4:
     if st.button(texts['Chinese']['button']):
         st.session_state['language'] = 'Chinese'
 
