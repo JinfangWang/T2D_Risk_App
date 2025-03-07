@@ -25,7 +25,7 @@ try:
     # Open the image
     image = Image.open("predictive_clustering_with_diseases_20241226_ADA.jpg")
     # Resize (only if you want to change the dimensions)
-    image = image.resize((500, 400))
+    image = image.resize((400, 300))
     # Now display it in Streamlit
     st.image(image)
 except FileNotFoundError:
