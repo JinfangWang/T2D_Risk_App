@@ -24,20 +24,7 @@ if 'language' not in st.session_state:
 ###################################
 # 0) Setup session state
 ###################################
-with st.sidebar.expander("🌐 Language", expanded=True):
-    if st.button("English"):
-        st.session_state['language'] = 'English'
-    if st.button("日本語"):
-        st.session_state['language'] = 'Japanese'
-    if st.button("中文"):
-        st.session_state['language'] = 'Chinese'
 
-# Stop execution until language is selected
-if st.session_state['language'] is None:
-    st.stop()
-
-# Now safely assign lang
-lang = st.session_state['language']
 
 ###################################
 # 1) Minimal text in each language
