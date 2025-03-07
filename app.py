@@ -167,7 +167,7 @@ if submitted:
             "ALT(GPT)": [float(alt_input)],
             "Gamma_GTP": [float(gamma_input)],
             "eGFR": [float(egfr_input)],
-            "Age": [int(age_input)],
+            "Age": [int(float(age_input.strip())) if age_input.strip() else None]
             "Sex": [1 if sex == "Male" else 0]
         })
     except ValueError:
