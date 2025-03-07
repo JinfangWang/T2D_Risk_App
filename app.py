@@ -20,22 +20,6 @@ st.set_page_config(layout="wide")  # Ensure this is the first Streamlit command
 if 'language' not in st.session_state:
     st.session_state['language'] = None  # Ensure language state is properly initialized
 
-# Possibly load an image
-try:
-    # Open the image
-    image = Image.open("predictive_clustering_with_diseases_20241226_ADA.jpg")
-    # Resize (only if you want to change the dimensions)
-    image = image.resize((400, 300))
-    # Now display it in Streamlit
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.image(image, use_container_width=True)
-
-except FileNotFoundError:
-    st.error("Image file not found. Make sure the file path is correct.")
-except Exception as e:
-    st.error(f"Error opening image: {e}")
-
 
 ###################################
 # 0) Setup session state
