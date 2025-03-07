@@ -387,7 +387,7 @@ if submitted:
             advice_heading = "## 🩺 个性化健康建议"
         st.write(advice_heading)
 
-        prompt = f"""
+        prompt_en = f"""
         You are a medical expert specializing in diabetes prevention. A user has an estimated Type 2 Diabetes risk probability of {risk_probability:.2f}.
         They belong to **Cluster {user_cluster} - {user_cluster_name}**, which represents individuals with similar health characteristics.
 
@@ -415,6 +415,70 @@ if submitted:
         🔹 **Every small step counts!** The goal is gradual improvement.  
         👨‍⚕️ **Consult a doctor before making major health changes.**  
         """
+        
+        prompt_jp = f"""
+あなたは糖尿病予防の専門家です。ユーザーの推定2型糖尿病リスク確率は {risk_probability:.2f} です。
+ユーザーは **クラスター {user_cluster} - {user_cluster_name}** に属しており、似たような健康特性を持つ人々を示します。
+
+📌 **健康概要**  
+- リスクレベル: {user_cluster_name}  
+- 主な懸念事項: {user_risk_advice}  
+
+⚡ **迅速なアクションプラン**  
+
+🥗 **食事のヒント**  
+✅ **食物繊維が豊富な食品**（野菜、全粒穀物、豆類）を選んで、血糖値管理をサポートしましょう。  
+❌ **砂糖入り飲料や加工されたスナック菓子**を減らし、インスリンの急上昇を抑えましょう。  
+🥑 **揚げ物などの悪い脂肪**を、**アボカド、ナッツ、魚**などの健康的な脂肪に置き換えましょう。  
+
+🏃 **運動のヒント**  
+🚶 **毎日30分のウォーキング**から始めるだけでも効果的です！  
+💪 週に**2～3回の筋力トレーニング**を取り入れて、代謝を上げましょう。  
+🧘 **継続してアクティブに**—楽しめるアクティビティを選び、モチベーションを維持してください。  
+
+🏥 **医療チェックアップ**  
+📅 **年に2回以上**は医師の診察を受け、血糖値を確認しましょう。  
+💊 必要があれば、より良い血糖管理のために**薬の利用**を検討しましょう。  
+🧠 メンタルヘルスも重要です—**ストレス管理や十分な睡眠**を心がけてください。  
+
+🔹 **小さなステップが大切です！** 目標は徐々に改善していくこと。  
+👨‍⚕️ **大きな健康の変化を始める前に医師に相談してください。**  
+"""
+        prompt_cn = f"""
+您是一名专门研究糖尿病预防的医学专家。用户的2型糖尿病估计风险概率为 {risk_probability:.2f}。
+他们属于 **聚类 {user_cluster} - {user_cluster_name}**，代表具有相似健康特征的人群。
+
+📌 **健康摘要**  
+- 风险等级：{user_cluster_name}  
+- 主要关注点：{user_risk_advice}  
+
+⚡ **快速行动计划**  
+
+🥗 **饮食建议**  
+✅ 选择 **富含纤维的食物**（如蔬菜、全谷物、豆类）帮助控制血糖。  
+❌ 减少 **含糖饮料和加工零食**，避免胰岛素飙升。  
+🥑 用 **健康脂肪**（鳄梨、坚果、鱼类）替代 **不健康脂肪**（油炸食品）。  
+
+🏃 **运动建议**  
+🚶 从 **每天30分钟的步行** 开始，即使轻度活动也能有益健康。  
+💪 每周增加 **2-3次力量训练**，以提高新陈代谢。  
+🧘 保持 **规律且活跃**——选择有趣的运动方式来保持动力。  
+
+🏥 **医疗检查**  
+📅 **每年至少进行两次**血糖监测及医生检查。  
+💊 如有需要，**可考虑使用药物**以更好地控制血糖。  
+🧠 心理健康同样重要——注意 **减压和充分睡眠**。  
+
+🔹 **每一步都很关键！** 目标是逐渐改善。  
+👨‍⚕️ **在进行重大健康调整之前，请咨询医生。**  
+""" 
+        
+        if lang == 'English':
+            prompt = prompt_en
+        elif lang == 'Japanese':
+            prompt = prompt_jp
+        else:
+            prompt = prompt_cn  
 
         response = openai.chat.completions.create(
             model="gpt-4",
