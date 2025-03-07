@@ -146,8 +146,8 @@ with st.form("user_input_form"):
         age_input = st.text_input("Age", "50")
     with col3: 
         sex = st.selectbox("Sex", ["Male", "Female"])
-
-submitted = st.form_submit_button("Submit")
+    
+    submitted = st.form_submit_button("Submit")
 
 if submitted:
     # ✅ 6. Convert User Input to DataFrame
