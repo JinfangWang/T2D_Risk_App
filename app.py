@@ -48,35 +48,15 @@ texts = {
 ###################################
 # 2) Always Show Language Buttons at the Top
 ###################################
-st.markdown("""
-    <style>
-    .language-container {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        display: flex;
-        gap: 10px;
-    }
-    .stButton>button {
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-    </style>
-    <div class="language-container">
-""", unsafe_allow_html=True)
+col1, col2 = st.columns([5, 1])  # Adjust proportions for right alignment
 
-col1, col2, col3 = st.columns([1,1,1])
-with col1:
+with col2:  # Right-aligned buttons
     if st.button(texts['English']['button']):
         st.session_state['language'] = 'English'
-with col2:
     if st.button(texts['Japanese']['button']):
         st.session_state['language'] = 'Japanese'
-with col3:
     if st.button(texts['Chinese']['button']):
         st.session_state['language'] = 'Chinese'
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # Stop execution if language is not selected
 if st.session_state['language'] is None:
