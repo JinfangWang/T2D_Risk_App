@@ -109,39 +109,37 @@ with col2:
 
 # ✅ 5. User Input Form
 with st.form("user_input_form"):
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
-        fbg_input = st.text_input("Fasting Blood Glucose (mg/dL)", "100")
+        fbg_input = st.text_input("Glucose (mg/dL)", "100")
     with col2:
         hba1c_input = st.text_input("HbA1c (%)", "5.4")
     with col3:
-        systolic_input = st.text_input("Systolic BP (mmHg)", "120")
+        systolic_input = st.text_input("Systolic (mmHg)", "120")
+    with col4:
+        diastolic_input = st.text_input("Diastolic (mmHg)", "80")
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
-        diastolic_input = st.text_input("Diastolic BP (mmHg)", "80")
-    with col2:
         height_input = st.text_input("Height (cm)", "170")
-    with col3:
+    with col2:
         weight_input = st.text_input("Weight (kg)", "70")
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
+    with col3:
         triglycerides_input = st.text_input("Triglycerides (mg/dL)", "130")
-    with col2:
-        hdl_input = st.text_input("HDL Cholesterol (mg/dL)", "55")
-    with col3:
-        ldl_input = st.text_input("LDL Cholesterol (mg/dL)", "100")
+    with col4:
+        hdl_input = st.text_input("HDL (mg/dL)", "55")
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
-        ast_input = st.text_input("AST (GOT) (U/L)", "30")
+        ldl_input = st.text_input("LDL (mg/dL)", "100")
     with col2:
-        alt_input = st.text_input("ALT (GPT) (U/L)", "30")
+        ast_input = st.text_input("AST (GOT) (U/L)", "30")
     with col3:
+        alt_input = st.text_input("ALT (GPT) (U/L)", "30")
+    with col4:
         gamma_input = st.text_input("Gamma-GTP (U/L)", "25")
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(4)
     with col1:
         egfr_input = st.text_input("eGFR (mL/min/1.73m²)", "90")
     with col2:
