@@ -139,7 +139,7 @@ with st.form("user_input_form"):
     with col4:
         gamma_input = st.text_input("Gamma-GTP (U/L)", "25")
     
-    col1, col2, col3 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         egfr_input = st.text_input("eGFR (mL/min/1.73m²)", "90")
     with col2:
