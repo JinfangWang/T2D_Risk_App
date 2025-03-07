@@ -32,7 +32,7 @@ st.markdown(
 ###################################
 # 0) Setup session state
 ###################################
-st.sidebar.title("🌐 Select Language")
+st.sidebar.title("Select")
 if st.sidebar.button("English"):
     st.session_state['language'] = 'English'
 if st.sidebar.button("日本語"):
