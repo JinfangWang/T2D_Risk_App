@@ -146,8 +146,8 @@ with st.form("user_input_form"):
         egfr_input = st.text_input("eGFR (mL/min/1.73m²)", "90")
     with col2:
         age_input = st.text_input("Age", "50")
-    
-    sex = st.selectbox("Sex", ["Male", "Female"])
+    with col3: 
+        sex = st.selectbox("Sex", ["Male", "Female"])
     
     submitted = st.form_submit_button("Submit")
 
