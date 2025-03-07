@@ -45,7 +45,7 @@ if st.session_state['language'] is None:
     )
 
 # sidebar
-lang = st.session_state['language']
+#lang = st.session_state['language']
 
 ###################################
 # 1) Minimal text in each language
