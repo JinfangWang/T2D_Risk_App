@@ -32,7 +32,11 @@ st.markdown(
 ###################################
 # 0) Setup session state
 ###################################
-st.sidebar.title("Select")
+st.set_page_config(layout="wide")  # Make sidebar narrower
+st.sidebar.markdown("<style> div[data-testid='stSidebar'] {width: 200px !important;} </style>", unsafe_allow_html=True)
+
+st.sidebar.title("🌐 Select Language")
+
 if st.sidebar.button("English"):
     st.session_state['language'] = 'English'
 if st.sidebar.button("日本語"):
