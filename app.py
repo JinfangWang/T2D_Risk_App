@@ -17,18 +17,29 @@ st.set_page_config(layout="wide")  # Must be called before other Streamlit comma
 with open("predictive_clustering_with_diseases_20241226_ADA.jpg", "rb") as img_file:
     encoded_img = base64.b64encode(img_file.read()).decode()
 
-# Inject CSS to target Streamlit's main container
-page_bg = f"""
+page_bg_css = f"""
 <style>
 [data-testid="stAppViewContainer"] {{
-    background: url("data:image/jpeg;base64,{encoded_img}");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    position: relative;
+    z-index: 0;
+}}
+[data-testid="stAppViewContainer"]::before {{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/jpeg;base64,{encoded_img}") no-repeat center center;
+    /* 1) Smaller image: 300px x 300px */
+    background-size: 300px 300px;
+    /* 2) Partial transparency */
+    opacity: 0.3;
+    z-index: -1;
 }}
 </style>
 """
-st.markdown(page_bg, unsafe_allow_html=True)
+st.markdown(page_bg_css, unsafe_allow_html=True)
 
 # 1) Setup session state properly
 ###################################
