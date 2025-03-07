@@ -50,9 +50,12 @@ st.write("""
 """, unsafe_allow_html=True)
 
 # Capture new language from query params
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 if 'lang' in query_params:
-    chosen_lang = query_params['lang'][0]
+    chosen_lang = query_params['lang']
+    # Handle case where st.query_params might return a list
+    if isinstance(chosen_lang, list):
+        chosen_lang = chosen_lang[0]
     if chosen_lang in ['English', 'Japanese', 'Chinese']:
         st.session_state['language'] = chosen_lang
 
