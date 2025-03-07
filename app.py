@@ -32,53 +32,13 @@ st.markdown(
 ###################################
 # 0) Setup session state
 ###################################
-# Create an empty space at the top for buttons
-st.markdown(
-    """
-    <style>
-    .top-right-buttons {
-        position: fixed;
-        top: 10px;
-        right: 20px;
-        display: flex;
-        gap: 10px;
-        z-index: 1000;
-    }
-    .top-right-buttons button {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-    .top-right-buttons button:hover {
-        background-color: #45a049;
-    }
-    </style>
-    <div class="top-right-buttons">
-        <form action="#" method="get">
-            <button type="submit" name="English">English</button>
-            <button type="submit" name="Japanese">日本語</button>
-            <button type="submit" name="Chinese">中文</button>
-        </form>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-# Create columns for spacing and button alignment
-col1, col2, col3, col4 = st.columns([5, 1, 1, 1])  # Left spacing, then buttons
-
-with col2:
-    if st.button("English"):
-        st.session_state['language'] = 'English'
-with col3:
-    if st.button("日本語"):
-        st.session_state['language'] = 'Japanese'
-with col4:
-    if st.button("中文"):
-        st.session_state['language'] = 'Chinese'
+st.sidebar.title("🌐 Select Language")
+if st.sidebar.button("English"):
+    st.session_state['language'] = 'English'
+if st.sidebar.button("日本語"):
+    st.session_state['language'] = 'Japanese'
+if st.sidebar.button("中文"):
+    st.session_state['language'] = 'Chinese'
 
 # Stop execution until language is selected
 if st.session_state['language'] is None:
