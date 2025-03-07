@@ -16,6 +16,32 @@ if 'language' not in st.session_state:
     st.session_state['language'] = None  # Start with no language chosen
 
 ###################################
+# 1) Apply Custom CSS for Top-Right Buttons
+###################################
+st.markdown("""
+    <style>
+        .top-right-buttons {
+            position: absolute;
+            top: 5px;  /* Reduce margin to make it flush */
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .top-right-buttons button {
+            font-size: 14px;
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+        }
+        .top-right-buttons button:hover {
+            background-color: #ddd;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+###################################
 # 1) Minimal text in each language
 ###################################
 texts = {
@@ -49,17 +75,14 @@ texts = {
 # 2) Always Show Language Buttons at the Top
 ###################################
 st.markdown("<div class='top-right-buttons'>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns(3)
 
-with col1:
-    if st.button(texts['English']['button']):
-        st.session_state['language'] = 'English'
-with col2:
-    if st.button(texts['Japanese']['button']):
-        st.session_state['language'] = 'Japanese'
-with col3:
-    if st.button(texts['Chinese']['button']):
-        st.session_state['language'] = 'Chinese'
+# Directly create buttons without using `st.columns()`
+if st.button(texts['English']['button']):
+    st.session_state['language'] = 'English'
+if st.button(texts['Japanese']['button']):
+    st.session_state['language'] = 'Japanese'
+if st.button(texts['Chinese']['button']):
+    st.session_state['language'] = 'Chinese'
 
 st.markdown("</div>", unsafe_allow_html=True)
 
