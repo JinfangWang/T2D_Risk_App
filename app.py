@@ -37,18 +37,26 @@ st.markdown(
     """
     <style>
     .top-right-buttons {
+        position: absolute;
+        top: 10px;
+        right: 20px;
         display: flex;
-        justify-content: flex-end;
         gap: 10px;
-        padding-right: 20px;
     }
     </style>
+    <div class="top-right-buttons">
+        <form action="#" method="get">
+            <input type="submit" name="English" value="English">
+            <input type="submit" name="Japanese" value="日本語">
+            <input type="submit" name="Chinese" value="中文">
+        </form>
+    </div>
     """,
     unsafe_allow_html=True
 )
 
 # Create columns to structure the layout
-col1, col2, col3, col4 = st.columns([6, 1, 1, 1])  # Left spacing, then buttons
+col1, col2, col3, col4, col5 = st.columns([5, 1, 1, 1, 1])  # Adjusting column widths
 
 # Place buttons on the top-right
 with col2:
