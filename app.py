@@ -75,13 +75,14 @@ st.markdown(f"<p style='text-align: center;'>{texts[lang]['description']}</p>", 
 ###################################
 # 4) Continue with the Normal App Logic
 ###################################
-
+""" 
 lang = st.session_state['language']
 title = texts[lang]['title']
 description = texts[lang]['description']
 
 st.markdown(f"<h2 style='text-align: center;'>{title}</h2>", unsafe_allow_html=True)
 st.markdown(f"<p style='text-align: center;'>{description}</p>", unsafe_allow_html=True)
+"""
 
 ###################################
 # 4) Normal app logic below
