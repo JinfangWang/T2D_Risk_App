@@ -37,28 +37,39 @@ st.markdown(
     """
     <style>
     .top-right-buttons {
-        position: absolute;
+        position: fixed;
         top: 10px;
         right: 20px;
         display: flex;
         gap: 10px;
+        z-index: 1000;
+    }
+    .top-right-buttons button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .top-right-buttons button:hover {
+        background-color: #45a049;
     }
     </style>
     <div class="top-right-buttons">
         <form action="#" method="get">
-            <input type="submit" name="English" value="English">
-            <input type="submit" name="Japanese" value="日本語">
-            <input type="submit" name="Chinese" value="中文">
+            <button type="submit" name="English">English</button>
+            <button type="submit" name="Japanese">日本語</button>
+            <button type="submit" name="Chinese">中文</button>
         </form>
     </div>
     """,
     unsafe_allow_html=True
 )
 
-# Create columns to structure the layout
-col1, col2, col3, col4, col5 = st.columns([5, 1, 1, 1, 1])  # Adjusting column widths
+# Create columns for spacing and button alignment
+col1, col2, col3, col4 = st.columns([5, 1, 1, 1])  # Left spacing, then buttons
 
-# Place buttons on the top-right
 with col2:
     if st.button("English"):
         st.session_state['language'] = 'English'
