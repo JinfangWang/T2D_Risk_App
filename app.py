@@ -46,45 +46,38 @@ texts = {
 }
 
 ###################################
-# 2) If no language chosen -> show minimal page
+# 2) Always Show Language Buttons at the Top
 ###################################
+st.markdown("<h3 style='text-align: center;'>🌍 Choose Your Language / 言語 / 语言</h3>", unsafe_allow_html=True)
+
+# Display 3 horizontal buttons
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button(texts['English']['button']):
+        st.session_state['language'] = 'English'
+with col2:
+    if st.button(texts['Japanese']['button']):
+        st.session_state['language'] = 'Japanese'
+with col3:
+    if st.button(texts['Chinese']['button']):
+        st.session_state['language'] = 'Chinese'
+
+# Stop execution if language is not selected
 if st.session_state['language'] is None:
-    st.markdown("<h2 style='text-align: center;'>Choose Your Language / 言語 / 语言</h2>", unsafe_allow_html=True)
-
-    # Display 3 horizontal buttons
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button(texts['English']['button']):
-            st.session_state['language'] = 'English'
-    with col2:
-        if st.button(texts['Japanese']['button']):
-            st.session_state['language'] = 'Japanese'
-    with col3:
-        if st.button(texts['Chinese']['button']):
-            st.session_state['language'] = 'Chinese'
-
-    st.stop()  # Stop so we don't show the rest of the form
-
-# Minimal top page with 3 language selection
-st.markdown("""
-<style>
-.top-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-.top-buttons button {
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-}
-</style>
-""", unsafe_allow_html=True)
+    st.stop()
 
 ###################################
-# 3) If user selected a language
+# 3) Display Title & Description in Selected Language
 ###################################
+lang = st.session_state['language']
+st.markdown(f"<h2 style='text-align: center;'>{texts[lang]['title']}</h2>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align: center;'>{texts[lang]['description']}</p>", unsafe_allow_html=True)
+
+
+###################################
+# 4) Continue with the Normal App Logic
+###################################
+
 lang = st.session_state['language']
 title = texts[lang]['title']
 description = texts[lang]['description']
@@ -95,34 +88,6 @@ st.markdown(f"<p style='text-align: center;'>{description}</p>", unsafe_allow_ht
 ###################################
 # 4) Normal app logic below
 ###################################
-
-
-# Minimal top page text in selected language
-def render_top_info(language):
-    if language == 'English':
-        title = "Understand Your Diabetes Risk"
-        description = (
-            "Enter your health details to assess your Type 2 Diabetes risk "
-            "and get personalized health advice based on advanced machine "
-            "learning analysis."
-        )
-    elif language == 'Japanese':
-        title = "糖尿病リスクを理解する"
-        description = (
-            "健康情報を入力して、2型糖尿病のリスクを評価し、"
-            "高度な機械学習分析に基づいたパーソナライズされた健康アドバイスを取得します。"
-        )
-    else:  # Chinese
-        title = "了解您的糖尿病风险"
-        description = (
-            "输入您的健康信息，评估您患2型糖尿病的风险，"
-            "并根据先进的机器学习分析获取个性化的健康建议。"
-        )
-
-    st.markdown(f"<h2 style='text-align: center;'>{title}</h2>", unsafe_allow_html=True)
-    st.markdown(f"<p style='text-align: center;'>{description}</p>", unsafe_allow_html=True)
-
-render_top_info(lang)
 
 ###########################
 # 2) DEFINE LABELS
