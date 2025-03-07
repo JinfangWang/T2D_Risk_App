@@ -8,7 +8,21 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.exceptions import NotFittedError
 from scipy.spatial.distance import cdist
 from PIL import Image
+import base64
 
+
+# Insert the background image code here
+with open("predictive_clustering_with_diseases_20241226_ADA.jpg", "rb") as img_file:
+    encoded_img = base64.b64encode(img_file.read()).decode()
+bg_style = f"""
+<style>
+body {{
+    background: url('data:image/jpeg;base64,{encoded_img}') no-repeat center center fixed;
+    background-size: cover;
+}}
+</style>
+"""
+st.markdown(bg_style, unsafe_allow_html=True)
 
 # 1) Setup session state properly
 ###################################
