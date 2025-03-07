@@ -20,7 +20,8 @@ st.set_page_config(layout="wide")  # Ensure this is the first Streamlit command
 if 'language' not in st.session_state:
     st.session_state['language'] = None  # Ensure language state is properly initialized
 
-st.markdown(
+if st.session_state['language'] is None:
+    st.markdown(
     """
     <div style="text-align:center; white-space:normal; word-wrap:break-word;">
         <h3>🩺 AI-powered Personalized Diabetes Risk Assessment</h3>
@@ -41,7 +42,7 @@ st.markdown(
     </div>
     """,
     unsafe_allow_html=True
-)
+    )
 
 with st.sidebar.expander("🌐 Language", expanded=True):
     if st.button("English"):
