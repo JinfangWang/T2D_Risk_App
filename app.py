@@ -11,18 +11,24 @@ from PIL import Image
 import base64
 
 
-# Insert the background image code here
+st.set_page_config(layout="wide")  # Must be called before other Streamlit commands
+
+# local image
 with open("predictive_clustering_with_diseases_20241226_ADA.jpg", "rb") as img_file:
     encoded_img = base64.b64encode(img_file.read()).decode()
-bg_style = f"""
+
+# Inject CSS to target Streamlit's main container
+page_bg = f"""
 <style>
-body {{
-    background: url('data:image/jpeg;base64,{encoded_img}') no-repeat center center fixed;
+[data-testid="stAppViewContainer"] {{
+    background: url("data:image/jpeg;base64,{encoded_img}");
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }}
 </style>
 """
-st.markdown(bg_style, unsafe_allow_html=True)
+st.markdown(page_bg, unsafe_allow_html=True)
 
 # 1) Setup session state properly
 ###################################
