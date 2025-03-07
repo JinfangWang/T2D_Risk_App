@@ -12,9 +12,11 @@ from PIL import Image
 ###################################
 # 0) Setup session state
 ###################################
+"""
 
 if 'language' not in st.session_state:
     st.session_state['language'] = None  # Start with no language chosen
+"""
 
 ###################################
 # 1) Minimal text in each language
