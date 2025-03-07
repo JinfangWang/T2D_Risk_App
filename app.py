@@ -33,21 +33,31 @@ st.markdown(
 if 'language' not in st.session_state:
     st.session_state['language'] = None  # Start with no language chosen
 
-col1, col2, col3, col4, col5 = st.columns([5, 1, 1, 1, 1])  # Adjusting for top-right placement
+with st.container():
+    st.markdown(
+        """
+        <style>
+        .lang-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    col1, col2, col3 = st.columns([8, 1, 1])  # Left spacing, then buttons
 
-with col3:
-    if st.button("English"):
-        st.session_state['language'] = 'English'
-with col4:
-    if st.button("日本語"):
-        st.session_state['language'] = 'Japanese'
-with col5:
-    if st.button("中文"):
-        st.session_state['language'] = 'Chinese'
-
-# Stop execution if language is not selected
-if st.session_state['language'] is None:
-    st.stop()
+    with col2:
+        if st.button("English"):
+            st.session_state['language'] = 'English'
+    with col3:
+        if st.button("日本語"):
+            st.session_state['language'] = 'Japanese'
+    with col3:
+        if st.button("中文"):
+            st.session_state['language'] = 'Chinese'
 
 ###################################
 # 1) Minimal text in each language
