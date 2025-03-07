@@ -38,14 +38,25 @@ except Exception as e:
 
 st.markdown(
     """
-    ## 🩺 AI-powered Personalized Diabetes Risk Assessment
-    Enter your health metrics to get your **Type 2 Diabetes risk** assessment
-    and receive **personalized health advices**.
-
-    健診データを入力し、**2型糖尿病のリスク評価** と **健康アドバイス** を受け取ろう。
-
-    输入您的健康数据，您将获得**2型糖尿病的风险评估**以及**个性化的健康建议**。
-    """
+    <div style="text-align:center; white-space:normal; word-wrap:break-word;">
+        <h3>🩺 AI-powered Personalized Diabetes Risk Assessment</h3>
+        <p>
+            Enter your health metrics to get your 
+            <strong>Type 2 Diabetes risk</strong> assessment
+            and receive <strong>personalized health advices</strong>.
+        </p>
+        <p>
+            健診データを入力し、<strong>2型糖尿病のリスク評価</strong> と 
+            <strong>健康アドバイス</strong> を受け取ろう。
+        </p>
+        <p>
+            输入您的健康数据，您将获得
+            <strong>2型糖尿病的风险评估</strong>以及
+            <strong>个性化的健康建议</strong>。
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
 ###################################
