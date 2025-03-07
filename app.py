@@ -48,6 +48,26 @@ texts = {
 ###################################
 # 2) Always Show Language Buttons at the Top
 ###################################
+st.markdown("<div class='top-right-buttons'>", unsafe_allow_html=True)
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    if st.button(texts['English']['button']):
+        st.session_state['language'] = 'English'
+with col2:
+    if st.button(texts['Japanese']['button']):
+        st.session_state['language'] = 'Japanese'
+with col3:
+    if st.button(texts['Chinese']['button']):
+        st.session_state['language'] = 'Chinese'
+
+st.markdown("</div>", unsafe_allow_html=True)
+
+# Stop execution if language is not selected
+if st.session_state['language'] is None:
+    st.stop()
+
+"""
 col1, col2, col3, col4 = st.columns([5, 1, 1, 1])  # Left spacing, then 3 buttons
 
 with col2:
@@ -63,6 +83,7 @@ with col4:
 # Stop execution if language is not selected
 if st.session_state['language'] is None:
     st.stop()
+"""
 
 ###################################
 # 3) Display Title & Description in Selected Language
