@@ -44,19 +44,7 @@ if st.session_state['language'] is None:
     unsafe_allow_html=True
     )
 
-with st.sidebar.expander("🌐 Language", expanded=True):
-    if st.button("English"):
-        st.session_state['language'] = 'English'
-    if st.button("日本語"):
-        st.session_state['language'] = 'Japanese'
-    if st.button("中文"):
-        st.session_state['language'] = 'Chinese'
-
-# Stop execution until language is selected
-if st.session_state['language'] is None:
-    st.stop()
-
-# Now safely assign lang
+# sidebar
 lang = st.session_state['language']
 
 ###################################
