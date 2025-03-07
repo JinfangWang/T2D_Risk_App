@@ -38,7 +38,7 @@ st.markdown(
 ###################################
 # 0) Setup session state
 ###################################
-st.sidebar.markdown("<style> div[data-testid='stSidebar'] {width: 200px !important;} </style>", unsafe_allow_html=True)
+st.sidebar.markdown("<style> div[data-testid='stSidebar'] {width: 100px !important;} </style>", unsafe_allow_html=True)
 
 st.sidebar.title("🌐 Select Language")
 
