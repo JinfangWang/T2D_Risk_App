@@ -9,50 +9,186 @@ from sklearn.exceptions import NotFittedError
 from scipy.spatial.distance import cdist
 from PIL import Image
 
+#############################
+#     1) MULTILANGUAGE UI
+#############################
+
+# Default to English if not set
+if 'language' not in st.session_state:
+    st.session_state['language'] = 'English'
+
+# Minimal top page with 3 language selection
+st.markdown("""
+<style>
+.top-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.top-buttons button {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Show language buttons at the top
+st.write("""
+<div class="top-buttons">
+    <form action="?lang=English" method="get" style="display:inline;">
+        <button name="lang" type="submit" value="English">English</button>
+    </form>
+    <form action="?lang=Japanese" method="get" style="display:inline;">
+        <button name="lang" type="submit" value="Japanese">日本語</button>
+    </form>
+    <form action="?lang=Chinese" method="get" style="display:inline;">
+        <button name="lang" type="submit" value="Chinese">中文</button>
+    </form>
+</div>
+""", unsafe_allow_html=True)
+
+# Capture new language from query params
+query_params = st.experimental_get_query_params()
+if 'lang' in query_params:
+    chosen_lang = query_params['lang'][0]
+    if chosen_lang in ['English', 'Japanese', 'Chinese']:
+        st.session_state['language'] = chosen_lang
+
+lang = st.session_state['language']
+
+# Minimal top page text in selected language
+def render_top_info(language):
+    if language == 'English':
+        title = "Understand Your Diabetes Risk"
+        description = (
+            "Enter your health details to assess your Type 2 Diabetes risk "
+            "and get personalized health advice based on advanced machine "
+            "learning analysis."
+        )
+    elif language == 'Japanese':
+        title = "糖尿病リスクを理解する"
+        description = (
+            "健康情報を入力して、2型糖尿病のリスクを評価し、"
+            "高度な機械学習分析に基づいたパーソナライズされた健康アドバイスを取得します。"
+        )
+    else:  # Chinese
+        title = "了解您的糖尿病风险"
+        description = (
+            "输入您的健康信息，评估您患2型糖尿病的风险，"
+            "并根据先进的机器学习分析获取个性化的健康建议。"
+        )
+
+    st.markdown(f"<h2 style='text-align: center;'>{title}</h2>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align: center;'>{description}</p>", unsafe_allow_html=True)
+
+render_top_info(lang)
+
+###########################
+# 2) DEFINE LABELS
+###########################
+labels = {
+    'English': {
+        'glucose': "Glucose (mg/dL)",
+        'hba1c': "HbA1c (%)",
+        'systolic': "Systolic (mmHg)",
+        'diastolic': "Diastolic (mmHg)",
+        'height': "Height (cm)",
+        'weight': "Weight (kg)",
+        'triglycerides': "Triglycerides (mg/dL)",
+        'hdl': "HDL (mg/dL)",
+        'ldl': "LDL (mg/dL)",
+        'ast': "AST (GOT) (U/L)",
+        'alt': "ALT (GPT) (U/L)",
+        'gamma': "Gamma-GTP (U/L)",
+        'egfr': "eGFR (mL/min/1.73m²)",
+        'age': "Age",
+        'sex': "Sex",
+        'male': "Male",
+        'female': "Female",
+        'submit': "Submit",
+        'risk_level': "Your Risk Level"
+    },
+    'Japanese': {
+        'glucose': "血糖値 (mg/dL)",
+        'hba1c': "HbA1c (%)",
+        'systolic': "収縮期 (mmHg)",
+        'diastolic': "拡張期 (mmHg)",
+        'height': "身長 (cm)",
+        'weight': "体重 (kg)",
+        'triglycerides': "中性脂肪 (mg/dL)",
+        'hdl': "HDL (mg/dL)",
+        'ldl': "LDL (mg/dL)",
+        'ast': "AST (GOT) (U/L)",
+        'alt': "ALT (GPT) (U/L)",
+        'gamma': "γ-GTP (U/L)",
+        'egfr': "eGFR (mL/min/1.73m²)",
+        'age': "年齢",
+        'sex': "性別",
+        'male': "男性",
+        'female': "女性",
+        'submit': "送信",
+        'risk_level': "あなたのリスクレベル"
+    },
+    'Chinese': {
+        'glucose': "血糖 (mg/dL)",
+        'hba1c': "HbA1c (%)",
+        'systolic': "收缩压 (mmHg)",
+        'diastolic': "舒张压 (mmHg)",
+        'height': "身高 (cm)",
+        'weight': "体重 (kg)",
+        'triglycerides': "甘油三酯 (mg/dL)",
+        'hdl': "HDL (mg/dL)",
+        'ldl': "LDL (mg/dL)",
+        'ast': "AST (GOT) (U/L)",
+        'alt': "ALT (GPT) (U/L)",
+        'gamma': "γ-GTP (U/L)",
+        'egfr': "eGFR (mL/min/1.73m²)",
+        'age': "年龄",
+        'sex': "性别",
+        'male': "男",
+        'female': "女",
+        'submit': "提交",
+        'risk_level': "您的风险等级"
+    }
+}
+
+lab = labels[lang]
+
+###########################
+# 3) REMAINING APP LOGIC
+###########################
+
+# If not declared, do so here
 def get_individual_cluster_mapping(lca_instance):
     """
     Prepares a DataFrame containing '加入者id', LIME-based cluster assignments,
     and all other relevant feature columns.
-
-    Parameters:
-        - lca_instance (LimeClusteringAnalysis): An instance of LimeClusteringAnalysis.
-
-    Returns:
-        - pd.DataFrame: DataFrame with '加入者id', 'Cluster_LIME_Ordered', and all features.
     """
-    # Ensure LIME cluster assignments exist
     if 'Cluster_Original_Ordered' not in lca_instance.lime_importances_df.columns:
         print("Running `compute_and_order_cluster_risks()` to ensure LIME cluster assignments exist.")
         lca_instance.compute_and_order_cluster_risks()
 
-    # Restore individual IDs since they were removed from X_test
     X_test_with_id = lca_instance.X_test.copy()
     X_test_with_id['加入者id'] = lca_instance.ID_test
-
-    # Merge LIME cluster assignments
     X_test_with_id['Cluster_LIME_Ordered'] = lca_instance.lime_importances_df['Cluster_Original_Ordered']
 
-    # Select columns with IDs, cluster assignments, and features
     feature_columns = lca_instance.X_train.columns.tolist()
     selected_columns = ['加入者id', 'Cluster_LIME_Ordered'] + feature_columns
-
     return X_test_with_id[selected_columns]
 
-# ✅ 1. Load Precomputed Data (Cluster Memberships and Features)
+# Load data
 try:
-    df_clusters = pd.read_csv("cluster_mapping.csv", encoding="utf-8")  # Ensure this file contains 'Cluster_LIME_Ordered'
-    
-    # Load pre-trained Logistic Regression model and scaler
+    df_clusters = pd.read_csv("cluster_mapping.csv", encoding="utf-8")
     with open("logistic_regression.pkl", "rb") as f:
         clf = pickle.load(f)
     with open("scaler.pkl", "rb") as f:
         scaler = pickle.load(f)
-
 except Exception as e:
     st.error(f"❌ Error loading files: {e}")
     st.stop()
 
-# ✅ 2. Debugging: Ensure Model and Scaler Are Loaded Correctly
 if not hasattr(clf, "coef_"):
     st.error("❌ The loaded classifier is not trained! Please re-train and save it.")
     st.stop()
@@ -61,106 +197,74 @@ if not isinstance(scaler, StandardScaler):
     st.error("❌ The loaded scaler is not a StandardScaler instance! Check `scaler.pkl`.")
     st.stop()
 
-# ✅ 3. UI Styling
-st.markdown(
-    """
-    <style>
-    .main {
-        background-color: #f5f5f5;
-        padding: 2rem;
-        border-radius: 10px;
-    }
-    .header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        text-align: center;
-        color: #2c3e50;
-        margin-bottom: 1rem;
-    }
-    .description {
-        font-size: 1.1rem;
-        color: #555555;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    </style>
-    """, unsafe_allow_html=True
-)
+# Possibly load an image
+try:
+    image = Image.open("predictive_clustering_with_diseases_20241226_ADA.jpg")
+    image = image.resize((500, 500))
+except:
+    image = None
 
-# ✅ 4. Load and Display the Image
-image = Image.open("predictive_clustering_with_diseases_20241226_ADA.jpg")
-image = image.resize((500, 500)) 
-
-
-# Layout with header and image
-col1, col2 = st.columns([3, 2])
-with col1:
-    st.markdown('<div class="header">Understand Your Diabetes Risk</div>', unsafe_allow_html=True)
-    st.markdown(
-        """
-        <div class="description">
-        Enter your health details to assess your Type 2 Diabetes risk and get personalized health advice based on advanced machine learning analysis.
-        </div>
-        """, unsafe_allow_html=True
-    )
-with col2:
-    # Display a logo or image on the top right corner
-    st.image(image, use_container_width=True)
-
-# ✅ 5. User Input Form
+###############
+# Form
+###############
 with st.form("user_input_form"):
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        fbg_input = st.text_input("Glucose (mg/dL)", "100")
+        fbg_input = st.text_input(lab['glucose'], "100")
     with col2:
-        hba1c_input = st.text_input("HbA1c (%)", "5.4")
+        hba1c_input = st.text_input(lab['hba1c'], "5.4")
     with col3:
-        systolic_input = st.text_input("Systolic (mmHg)", "120")
+        systolic_input = st.text_input(lab['systolic'], "120")
     with col4:
-        diastolic_input = st.text_input("Diastolic (mmHg)", "80")
-    
+        diastolic_input = st.text_input(lab['diastolic'], "80")
+
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        height_input = st.text_input("Height (cm)", "170")
+        height_input = st.text_input(lab['height'], "170")
     with col2:
-        weight_input = st.text_input("Weight (kg)", "70")
+        weight_input = st.text_input(lab['weight'], "70")
     with col3:
-        triglycerides_input = st.text_input("Triglycerides (mg/dL)", "130")
+        triglycerides_input = st.text_input(lab['triglycerides'], "130")
     with col4:
-        hdl_input = st.text_input("HDL (mg/dL)", "55")
-    
+        hdl_input = st.text_input(lab['hdl'], "55")
+
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        ldl_input = st.text_input("LDL (mg/dL)", "100")
+        ldl_input = st.text_input(lab['ldl'], "100")
     with col2:
-        ast_input = st.text_input("AST (GOT) (U/L)", "30")
+        ast_input = st.text_input(lab['ast'], "30")
     with col3:
-        alt_input = st.text_input("ALT (GPT) (U/L)", "30")
+        alt_input = st.text_input(lab['alt'], "30")
     with col4:
-        gamma_input = st.text_input("Gamma-GTP (U/L)", "25")
-    
+        gamma_input = st.text_input(lab['gamma'], "25")
+
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        egfr_input = st.text_input("eGFR (mL/min/1.73m²)", "90")
+        egfr_input = st.text_input(lab['egfr'], "90")
     with col2:
-        age_input = st.text_input("Age", "50")
-    with col3: 
-        sex = st.selectbox("Sex", ["Male", "Female"])
+        age_input = st.text_input(lab['age'], "50")
+    with col3:
+        sex_option = st.selectbox(lab['sex'], [lab['male'], lab['female']])
     with col4:
         pass
-       
-    submitted = st.form_submit_button("Submit")
 
+    submitted = st.form_submit_button(lab['submit'])
+
+#############################
+# On Submit
+#############################
 if submitted:
-    # ✅ 6. Convert User Input to DataFrame
+    # 1) Convert
     try:
-        # 🔹 Compute BMI dynamically
+        # BMI
         bmi_value = float(weight_input) / ((float(height_input) / 100) ** 2)
-        
+        # sex numeric
+        sex_val = 1 if sex_option == lab['male'] else 0
+
         user_data = pd.DataFrame({
             "Systolic_BP": [float(systolic_input.strip())],
             "Diastolic_BP": [float(diastolic_input.strip())],
-            "BMI": [bmi_value],  # 🔹 Using computed BMI
+            "BMI": [bmi_value],
             "Triglycerides": [float(triglycerides_input.strip())],
             "HDL_Cholesterol": [float(hdl_input.strip())],
             "LDL_Cholesterol": [float(ldl_input.strip())],
@@ -168,47 +272,38 @@ if submitted:
             "ALT(GPT)": [float(alt_input.strip())],
             "Gamma_GTP": [float(gamma_input.strip())],
             "eGFR": [float(egfr_input.strip())],
-            "Age": [int(float(age_input.strip()))],  # 🔹 Ensure proper integer conversion
-            "Sex": [1 if sex == "Male" else 0]
+            "Age": [int(float(age_input.strip()))],
+            "Sex": [sex_val]
         })
     except ValueError:
         st.error("🚨 Please enter only numeric values in all input fields.")
         st.stop()
-    
-    # ✅ 7. Standardize User Data
+
+    # 2) Standardize
     X_user_scaled = scaler.transform(user_data)
 
-    # ✅ 8. Compute Risk Probability
+    # 3) Risk Probability
     try:
         risk_probability = clf.predict_proba(X_user_scaled)[:, 1][0]
     except NotFittedError:
         st.error("Error: The classifier has not been fitted. Please re-train and save the model before running the app.")
         st.stop()
-    
-    # ✅ 9. Find the Closest Match Using Euclidean Distance
+
+    # 4) Clustering
     feature_columns = [col for col in df_clusters.columns if col not in ['加入者id', 'Cluster_LIME_Ordered']]
-
-    # Ensure that df_clusters only contains the features used during model training
     expected_features = ['Systolic_BP', 'Diastolic_BP', 'BMI', 'Triglycerides', 'HDL_Cholesterol',
-    'LDL_Cholesterol', 'AST(GOT)', 'ALT(GPT)', 'Gamma_GTP', 'eGFR', 'Age', 'Sex']
-
-    # Drop any extra columns that were not used during training
+                         'LDL_Cholesterol', 'AST(GOT)', 'ALT(GPT)', 'Gamma_GTP', 'eGFR', 'Age', 'Sex']
     df_clusters_filtered = df_clusters[expected_features]
-
-    # Now, transform the filtered data
     X_scaled = scaler.transform(df_clusters_filtered)
 
     distances = cdist(X_user_scaled, X_scaled, metric='euclidean')
     closest_idx = np.argmin(distances)
     matched_individual = df_clusters.iloc[closest_idx]
 
-    # ✅ 10. Assign Cluster Membership
     user_cluster = matched_individual['Cluster_LIME_Ordered']
 
-    # ✅ 11. Color-coded Risk Display
-    risk_color = "green" if risk_probability < 0.1 else \
-                 "orange" if risk_probability < 0.3 else "red"
-    
+    # 5) Risk color
+    risk_color = "green" if risk_probability < 0.1 else "orange" if risk_probability < 0.3 else "red"
     st.markdown(
         f"""
         <div class="risk-box" style="background-color:{risk_color}; color:white;">
@@ -218,37 +313,38 @@ if submitted:
         unsafe_allow_html=True
     )
 
-    # Define cluster labels
-    cluster_labels = ["Healthy", 
-                      "Mild dyslipidemia", 
-                      "Dyslipidemia", 
-                      "Hypertensive", 
-                      "Mild metabolic", 
-                      "Moderate metabolic", 
-                      "Severe metabolic"]
-
-    # Get the descriptive cluster name
+    # 6) Cluster Labels
+    cluster_labels = [
+        "Healthy", 
+        "Mild dyslipidemia", 
+        "Dyslipidemia", 
+        "Hypertensive", 
+        "Mild metabolic", 
+        "Moderate metabolic", 
+        "Severe metabolic"
+    ]
     user_cluster_name = cluster_labels[int(user_cluster)]
 
-    # Define severity-based colors (0: healthy -> 6: high risk)
+    # Severity-based colors
     cluster_colors = [
-        "#2ECC71",  # Green  - Healthy (Low Risk)
-        "#F1C40F",  # Yellow - Mild Dyslipidemia
-        "#F39C12",  # Orange - Dyslipidemia
-        "#D35400",  # Dark Orange - Hypertensive
-        "#E74C3C",  # Red - Mild Metabolic
-        "#C0392B",  # Dark Red - Moderate Metabolic
-        "#900C3F"   # Deep Red - Severe Metabolic (High Risk)
-        ]
-
-    # Default all clusters to grey
-    default_cluster_color = "#BDC3C7"
-
-    # Display all clusters in a simple vertical structure
-    st.write("#### 🏥 Your Risk Level")
+        "#2ECC71",  # Healthy
+        "#F1C40F",  # Mild dyslipidemia
+        "#F39C12",  # Dyslipidemia
+        "#D35400",  # Hypertensive
+        "#E74C3C",  # Mild metabolic
+        "#C0392B",  # Moderate metabolic
+        "#900C3F"   # Severe metabolic
+    ]
+    # local heading
+    if lang == 'English':
+        heading_text = "#### 🏥 Your Risk Level"
+    elif lang == 'Japanese':
+        heading_text = "#### 🏥 あなたのリスクレベル"
+    else:
+        heading_text = "#### 🏥 您的风险等级"
+    st.write(heading_text)
 
     for i, label in enumerate(cluster_labels):
-        # Highlight only the user’s assigned cluster with bold text and color formatting
         if i == int(user_cluster):
             st.markdown(
                 f'<span style="background-color:{cluster_colors[i]}; '
@@ -256,12 +352,10 @@ if submitted:
                 f'🏥 {label} (your level)</span>',
                 unsafe_allow_html=True
             )
-            #st.markdown(f"**:large_orange_diamond: {label}** (your level)", unsafe_allow_html=True)
         else:
             st.markdown(f'<span style="color: grey;">◾ {label}</span>', unsafe_allow_html=True)
 
-    # ✅ 11. Generate Personalized Advice Using OpenAI LLM
-    # Ensure API Key is available
+    # 7) LLM Advice
     if "OPENAI_API_KEY" not in st.secrets:
         st.error("🚨 OpenAI API Key is missing! Add it in Streamlit Secrets.")
     else:
@@ -277,6 +371,15 @@ if submitted:
         }
 
         user_risk_advice = cluster_risks[int(user_cluster)]
+
+        # local advice heading
+        if lang == 'English':
+            advice_heading = "## 🩺 Personalized Health Advice"
+        elif lang == 'Japanese':
+            advice_heading = "## 🩺 個別の健康アドバイス"
+        else:
+            advice_heading = "## 🩺 个性化健康建议"
+        st.write(advice_heading)
 
         prompt = f"""
         You are a medical expert specializing in diabetes prevention. A user has an estimated Type 2 Diabetes risk probability of {risk_probability:.2f}.
@@ -307,13 +410,11 @@ if submitted:
         👨‍⚕️ **Consult a doctor before making major health changes.**  
         """
 
-        response = openai.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.3
         )
-
-        st.write("## 🩺 Personalized Health Advice")
 
         st.markdown(
             f"""
@@ -321,5 +422,6 @@ if submitted:
                 <b>📌 Lifestyle Recommendations for {user_cluster_name}:</b><br>
                 {response.choices[0].message.content.strip()}
             </div>
-            """, unsafe_allow_html=True
+            """,
+            unsafe_allow_html=True
         )
