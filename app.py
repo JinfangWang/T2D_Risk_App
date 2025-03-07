@@ -12,22 +12,6 @@ from PIL import Image
 ###################################
 # 0) Setup session state
 ###################################
-st.markdown(
-    """
-    ## 🩺 Personalized Diabetes Risk Assessment
-    Welcome to our AI-powered diabetes risk assessment tool. By entering your health metrics, 
-    you will receive an AI-based evaluation of your **Type 2 Diabetes risk** and 
-    **personalized health advice**.
-
-    ## 🩺 パーソナライズされた糖尿病リスク評価
-    AIを活用した糖尿病リスク評価ツールへようこそ。健康データを入力することで、
-    **2型糖尿病のリスク評価** と **あたなの健康アドバイス** を受け取ることができます。
-
-    ## 🩺 个性化糖尿病风险评估
-    欢迎使用我们的AI驱动糖尿病风险评估工具。通过输入您的健康数据，
-    您将获得**2型糖尿病的风险评估**以及**个性化的健康建议**。
-    """
-)
 
 if 'language' not in st.session_state:
     st.session_state['language'] = None  # Start with no language chosen
@@ -89,9 +73,22 @@ st.markdown(f"<h2 style='text-align: center;'>{texts[lang]['title']}</h2>", unsa
 st.markdown(f"<p style='text-align: center;'>{texts[lang]['description']}</p>", unsafe_allow_html=True)
 
 
-###################################
-# 4) Normal app logic below
-###################################
+st.markdown(
+    """
+    ## 🩺 Personalized Diabetes Risk Assessment
+    Welcome to our AI-powered diabetes risk assessment tool. By entering your health metrics, 
+    you will receive an AI-based evaluation of your **Type 2 Diabetes risk** and 
+    **personalized health advice**.
+
+    ## 🩺 パーソナライズされた糖尿病リスク評価
+    AIを活用した糖尿病リスク評価ツールへようこそ。健康データを入力することで、
+    **2型糖尿病のリスク評価** と **あたなの健康アドバイス** を受け取ることができます。
+
+    ## 🩺 个性化糖尿病风险评估
+    欢迎使用我们的AI驱动糖尿病风险评估工具。通过输入您的健康数据，
+    您将获得**2型糖尿病的风险评估**以及**个性化的健康建议**。
+    """
+)
 
 ###########################
 # 2) DEFINE LABELS
