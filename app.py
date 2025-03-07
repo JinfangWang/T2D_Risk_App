@@ -212,6 +212,16 @@ if not isinstance(scaler, StandardScaler):
 ###############
 # Form
 ###############
+st.markdown(
+    """
+    <style>
+    input[type="text"] {
+        width: 80px !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 with st.form("user_input_form"):
     col1, col2, col3, col4 = st.columns(4)
     with col1:
