@@ -53,8 +53,7 @@ if st.session_state['language'] is None:
     """,
     unsafe_allow_html=True
     )
-
-# sidebar
+    st.stop()
 
 ###################################
 # 1) Minimal text in each language
