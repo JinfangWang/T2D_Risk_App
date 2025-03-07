@@ -27,7 +27,10 @@ try:
     # Resize (only if you want to change the dimensions)
     image = image.resize((400, 300))
     # Now display it in Streamlit
-    st.image(image)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image(image, use_column_width=True)
+        
 except FileNotFoundError:
     st.error("Image file not found. Make sure the file path is correct.")
 except Exception as e:
