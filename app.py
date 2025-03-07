@@ -33,6 +33,22 @@ st.markdown(
 if 'language' not in st.session_state:
     st.session_state['language'] = None  # Start with no language chosen
 
+col1, col2, col3, col4, col5 = st.columns([5, 1, 1, 1, 1])  # Adjusting for top-right placement
+
+with col3:
+    if st.button("English"):
+        st.session_state['language'] = 'English'
+with col4:
+    if st.button("日本語"):
+        st.session_state['language'] = 'Japanese'
+with col5:
+    if st.button("中文"):
+        st.session_state['language'] = 'Chinese'
+
+# Stop execution if language is not selected
+if st.session_state['language'] is None:
+    st.stop()
+
 ###################################
 # 1) Minimal text in each language
 ###################################
@@ -62,25 +78,6 @@ texts = {
         'button': "中文"
     }
 }
-
-###################################
-# 2) Always Show Language Buttons at the Top
-###################################
-col1, col2, col3, col4 = st.columns([5, 1, 1, 1])  # Left spacing, then 3 buttons
-
-with col2:
-    if st.button(texts['English']['button']):
-        st.session_state['language'] = 'English'
-with col3:
-    if st.button(texts['Japanese']['button']):
-        st.session_state['language'] = 'Japanese'
-with col4:
-    if st.button(texts['Chinese']['button']):
-        st.session_state['language'] = 'Chinese'
-
-# Stop execution if language is not selected
-if st.session_state['language'] is None:
-    st.stop()
 
 ###################################
 # 3) Display Title & Description in Selected Language
