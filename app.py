@@ -29,8 +29,8 @@ try:
     # Now display it in Streamlit
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        st.image(image, use_column_width=True)
-        
+        st.image(image, use_container_width=True)
+
 except FileNotFoundError:
     st.error("Image file not found. Make sure the file path is correct.")
 except Exception as e:
