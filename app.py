@@ -337,7 +337,7 @@ if submitted:
     st.markdown(
         f"""
         <div class="risk-box" style="background-color:{risk_color}; color:white;">
-            🔥 Estimated Type 2 Diabetes Risk: <b>{risk_probability * 100:.0f}%</b>
+            🔥 Estimated Type 2 Diabetes Risk: <b>{risk_probability * 100:.1f}%</b>
         </div>
         """,
         unsafe_allow_html=True
@@ -412,7 +412,7 @@ if submitted:
         st.write(advice_heading)
 
         prompt_en = f"""
-        You are a medical expert specializing in diabetes prevention. A user has an estimated Type 2 Diabetes risk probability of {risk_probability:.2f}.
+        You are a medical expert specializing in diabetes prevention. A user has an estimated Type 2 Diabetes risk probability of {risk_probability * 100:.1f}%.
         They belong to **Cluster {user_cluster} - {user_cluster_name}**, which represents individuals with similar health characteristics.
 
         📌 **Health Summary**  
@@ -441,7 +441,7 @@ if submitted:
         """
         
         prompt_jp = f"""
-あなたは糖尿病予防の専門家です。ユーザーの推定2型糖尿病リスク確率は {risk_probability:.2f} です。
+あなたは糖尿病予防の専門家です。ユーザーの推定2型糖尿病リスク確率は {risk_probability * 100:.1f}% です。
 ユーザーは **クラスター {user_cluster} - {user_cluster_name}** に属しており、似たような健康特性を持つ人々を示します。
 
 📌 **健康概要**  
@@ -471,7 +471,7 @@ if submitted:
         prompt_cn = f"""
 作为糖尿病预防的医学专家，根据以下具体内容给出中文建议。
 
-用户的2型糖尿病估计风险概率为 {risk_probability:.2f}。
+用户的2型糖尿病估计风险概率为 {risk_probability * 100:.1f}%。
 他们属于 **聚类 {user_cluster} - {user_cluster_name}**，代表具有相似健康特征的人群。
 
 📌 **健康摘要**  
