@@ -53,7 +53,7 @@ if st.session_state['language'] is None:
             <strong>个性化的健康建议</strong>。
         </p>
         <br><br>
-        <p style="color: red; font-size: 16px; font-weight: bold;">
+        <p style="color: red; font-size: 20px; text-transform: uppercase; font-weight: bold;">
         <strong>Choose a language above to get started.</strong>
     </p>
     </div>
