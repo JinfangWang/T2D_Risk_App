@@ -33,8 +33,14 @@ with col4:
     if st.button("中文"):
         st.session_state['language'] = 'Chinese'
 
+image = Image.open("predictive_clustering_with_diseases_20241226_ADA.jpg")
+image = image.resize((500, 500)) 
+
+# Layout with intro and image
 if st.session_state['language'] is None:
-    st.markdown(
+    col1, col2 = st.columns([3, 2])
+    with col1:
+        st.markdown(
     """
     <div style="text-align:center; white-space:normal; word-wrap:break-word;">
         <h3>🩺 AI-powered Personalized Diabetes Risk Assessment</h3>
@@ -60,6 +66,8 @@ if st.session_state['language'] is None:
     """,
     unsafe_allow_html=True
     )
+    with col2:
+        st.image(image, use_container_width=True)
     st.stop()
 
 ###################################
