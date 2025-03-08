@@ -140,8 +140,8 @@ labels = {
     'Japanese': {
         'glucose': "血糖値 (mg/dL)",
         'hba1c': "HbA1c (%)",
-        'systolic': "収縮期 (mmHg)",
-        'diastolic': "拡張期 (mmHg)",
+        'systolic': "収縮期血圧 (mmHg)",
+        'diastolic': "拡張期血圧 (mmHg)",
         'height': "身長 (cm)",
         'weight': "体重 (kg)",
         'triglycerides': "中性脂肪 (mg/dL)",
@@ -337,7 +337,7 @@ if submitted:
     st.markdown(
         f"""
         <div class="risk-box" style="background-color:{risk_color}; color:white;">
-            🔥 Estimated Type 2 Diabetes Risk: <b>{risk_probability:.2f}</b>
+            🔥 Estimated Type 2 Diabetes Risk: <b>{risk_probability * 100:.0f}%</b>
         </div>
         """,
         unsafe_allow_html=True
