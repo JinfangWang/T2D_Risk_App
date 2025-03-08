@@ -52,6 +52,10 @@ if st.session_state['language'] is None:
             <strong>2型糖尿病的风险评估</strong>以及
             <strong>个性化的健康建议</strong>。
         </p>
+        <br><br>
+        <p style="color: red; font-size: 16px; font-weight: bold;">
+        <strong>Choose a language above to get started.</strong>
+    </p>
     </div>
     """,
     unsafe_allow_html=True
