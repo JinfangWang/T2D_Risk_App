@@ -60,7 +60,7 @@ if st.session_state['language'] is None:
         </p>
         <br><br>
         <p style="color: blue; font-size: 25px; font-weight: bold;">
-        <strong>Choose a language above to get started.</strong>
+        <strong>Choose a language to get started.</strong>
     </p>
     </div>
     """,
@@ -104,9 +104,13 @@ texts = {
 # 3) Display Title & Description in Selected Language
 ###################################
 lang = st.session_state['language']
-st.markdown(f"<h2 style='text-align: center;'>{texts[lang]['title']}</h2>", unsafe_allow_html=True)
-st.markdown(f"<p style='text-align: center;'>{texts[lang]['description']}</p>", unsafe_allow_html=True)
-
+# Layout with message and image
+col1, col2 = st.columns([3, 2])
+with col1:
+    st.markdown(f"<h2 style='text-align: center;'>{texts[lang]['title']}</h2>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align: center;'>{texts[lang]['description']}</p>", unsafe_allow_html=True)
+with col2:
+    st.image(image, use_container_width=True)
 
 ###########################
 # 2) DEFINE LABELS
