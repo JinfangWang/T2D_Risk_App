@@ -10,6 +10,9 @@ from scipy.spatial.distance import cdist
 from PIL import Image
 import base64
 
+# Set page layout at the beginning (MUST be the first Streamlit command)
+st.set_page_config(layout="centered")  # Or use "wide" if you prefer
+
 # 1) Setup session state properly
 ###################################
 if 'language' not in st.session_state:
