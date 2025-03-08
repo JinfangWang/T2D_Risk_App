@@ -240,41 +240,41 @@ st.markdown(
 with st.form("user_input_form"):
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        fbg_input = st.text_input(lab['glucose'], "100")
-    with col2:
-        hba1c_input = st.text_input(lab['hba1c'], "5.4")
-    with col3:
         systolic_input = st.text_input(lab['systolic'], "120")
-    with col4:
+    with col2:
         diastolic_input = st.text_input(lab['diastolic'], "80")
-
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
+    with col3:
         height_input = st.text_input(lab['height'], "170")
-    with col2:
+    with col4:
         weight_input = st.text_input(lab['weight'], "70")
-    with col3:
+    
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
         triglycerides_input = st.text_input(lab['triglycerides'], "130")
-    with col4:
+    with col2:
         hdl_input = st.text_input(lab['hdl'], "55")
-
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
+    with col3:
         ldl_input = st.text_input(lab['ldl'], "100")
-    with col2:
-        ast_input = st.text_input(lab['ast'], "30")
-    with col3:
-        alt_input = st.text_input(lab['alt'], "30")
     with col4:
-        gamma_input = st.text_input(lab['gamma'], "25")
+        ast_input = st.text_input(lab['ast'], "30")
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        egfr_input = st.text_input(lab['egfr'], "90")
+        alt_input = st.text_input(lab['alt'], "30")
     with col2:
-        age_input = st.text_input(lab['age'], "50")
+        gamma_input = st.text_input(lab['gamma'], "25")
     with col3:
+        egfr_input = st.text_input(lab['egfr'], "90")
+    with col4:
+        age_input = st.text_input(lab['age'], "50")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
         sex_option = st.selectbox(lab['sex'], [lab['male'], lab['female']])
+    with col2:
+        pass
+    with col3:
+        pass
     with col4:
         pass
 
