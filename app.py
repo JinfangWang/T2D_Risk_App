@@ -9,6 +9,26 @@ from sklearn.exceptions import NotFittedError
 from scipy.spatial.distance import cdist
 from PIL import Image
 import base64
+import pinecone
+from pinecone import Pinecone
+from sentence_transformers import SentenceTransformer
+
+
+# Initialize Pinecone and SentenceTransformer model (update your index name)
+pinecone_api_key = st.secrets["PINECONE_API_KEY"] 
+if not pinecone_api_key:
+    st.error("🚨 Pinecone API key missing!")
+    st.stop()
+
+pc = Pinecone(api_key=pinecone_api_key)
+index_name = "diabetes-care-standards-2025"  # Your new Pinecone index name
+if index_name not in pc.list_indexes().names():
+    st.error(f"🚨 Index '{index_name}' not found!")
+    st.stop()
+
+index = pc.Index(index_name)
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+
 
 # Set page layout at the beginning (MUST be the first Streamlit command)
 st.set_page_config(layout="centered")  # Or use "wide" if you prefer
@@ -411,6 +431,19 @@ if submitted:
             advice_heading = "## 🩺 个性化健康建议"
         st.write(advice_heading)
 
+        # Generate query from user's cluster risk profile
+        query = f"Management guidelines and lifestyle advice for individuals with {user_cluster_name.lower()} regarding Type 2 diabetes risk."
+
+        # Generate embedding for the query
+        query_embedding = embedding_model.encode(query).tolist()
+
+        # Retrieve top relevant guidelines from Pinecone
+        search_results = index.query(vector=query_embedding, top_k=5, include_metadata=True)
+        retrieved_texts = [match["metadata"]["text"] for match in search_results["matches"]]
+        context = "\n\n".join(retrieved_texts)
+
+        # Form the new prompt
+
         prompt_en = f"""
         You are a medical expert specializing in diabetes prevention. A user has an estimated Type 2 Diabetes risk probability of {risk_probability * 100:.1f}%.
         They belong to **Cluster {user_cluster} - {user_cluster_name}**, which represents individuals with similar health characteristics.
@@ -419,25 +452,9 @@ if submitted:
         - Risk Level: {user_cluster_name}  
         - Key Concerns: {user_risk_advice}  
 
-        ⚡ **Quick Action Plan**  
-
-        🥗 **Diet Tips**  
-        ✅ Choose **fiber-rich foods** (vegetables, whole grains, legumes) to help blood sugar control.  
-        ❌ Reduce **sugary drinks & processed snacks** to avoid insulin spikes.  
-        🥑 Swap **bad fats** (fried foods) for **healthy fats** (avocados, nuts, fish).  
-
-        🏃 **Exercise Tips**  
-        🚶 Start with **daily 30-min walks** – even light activity helps!  
-        💪 Add **2-3 days of strength training** for better metabolism.  
-        🧘 Stay **consistent & active** – choose fun activities to keep motivated.  
-
-        🏥 **Medical Check-ups**  
-        📅 See a doctor **at least twice a year** for blood sugar monitoring.  
-        💊 If needed, **consider medications** for better glucose control.  
-        🧠 Mental well-being is key – **stress management & sleep** matter too!  
-
-        🔹 **Every small step counts!** The goal is gradual improvement.  
-        👨‍⚕️ **Consult a doctor before making major health changes.**  
+        ⚡ **Relevant Health Advices**:
+        {context}
+        Given the above official guidelines and user profile, please provide concise, personalized lifestyle recommendations including diet, exercise, and medical follow-ups.
         """
         
         prompt_jp = f"""
@@ -448,25 +465,10 @@ if submitted:
 - リスクレベル: {user_cluster_name}  
 - 主な懸念事項: {user_risk_advice}  
 
-⚡ **迅速なアクションプラン**  
+⚡ **健康助言**
+{context}
 
-🥗 **食事のヒント**  
-✅ **食物繊維が豊富な食品**（野菜、全粒穀物、豆類）を選んで、血糖値管理をサポートしましょう。  
-❌ **砂糖入り飲料や加工されたスナック菓子**を減らし、インスリンの急上昇を抑えましょう。  
-🥑 **揚げ物などの悪い脂肪**を、**アボカド、ナッツ、魚**などの健康的な脂肪に置き換えましょう。  
-
-🏃 **運動のヒント**  
-🚶 **毎日30分のウォーキング**から始めるだけでも効果的です！  
-💪 週に**2～3回の筋力トレーニング**を取り入れて、代謝を上げましょう。  
-🧘 **継続してアクティブに**—楽しめるアクティビティを選び、モチベーションを維持してください。  
-
-🏥 **医療チェックアップ**  
-📅 **年に2回以上**は医師の診察を受け、血糖値を確認しましょう。  
-💊 必要があれば、より良い血糖管理のために**薬の利用**を検討しましょう。  
-🧠 メンタルヘルスも重要です—**ストレス管理や十分な睡眠**を心がけてください。  
-
-🔹 **小さなステップが大切です！** 目標は徐々に改善していくこと。  
-👨‍⚕️ **大きな健康の変化を始める前に医師に相談してください。**  
+上記の公式ガイドラインおよびユーザーの健康プロフィールに基づいて、食事、運動、定期的な健康診断を含む、簡潔で個別的な生活習慣のアドバイスを提供してください。
 """
         prompt_cn = f"""
 作为糖尿病预防的医学专家，根据以下具体内容给出中文建议。
@@ -478,25 +480,10 @@ if submitted:
 - 风险等级：{user_cluster_name}  
 - 主要关注点：{user_risk_advice}  
 
-⚡ **快速行动计划**  
+⚡ **糖尿病护理指南：**
+{context}
 
-🥗 **饮食建议**  
-✅ 选择 **富含纤维的食物**（如蔬菜、全谷物、豆类）帮助控制血糖。  
-❌ 减少 **含糖饮料和加工零食**，避免胰岛素飙升。  
-🥑 用 **健康脂肪**（鳄梨、坚果、鱼类）替代 **不健康脂肪**（油炸食品）。  
-
-🏃 **运动建议**  
-🚶 从 **每天30分钟的步行** 开始，即使轻度活动也能有益健康。  
-💪 每周增加 **2-3次力量训练**，以提高新陈代谢。  
-🧘 保持 **规律且活跃**——选择有趣的运动方式来保持动力。  
-
-🏥 **医疗检查**  
-📅 **每年至少进行两次**血糖监测及医生检查。  
-💊 如有需要，**可考虑使用药物**以更好地控制血糖。  
-🧠 心理健康同样重要——注意 **减压和充分睡眠**。  
-
-🔹 **每一步都很关键！** 目标是逐渐改善。  
-👨‍⚕️ **在进行重大健康调整之前，请咨询医生。**  
+请根据以上官方指南和用户的健康状况，提供简明的、个性化的生活方式建议，包括饮食、运动和医疗随访。
 """ 
         
         if lang == 'English':
@@ -521,3 +508,15 @@ if submitted:
             """,
             unsafe_allow_html=True
         )
+
+        st.markdown(
+            """
+            <br><br><br><br>
+            <div style='text-align: center; color: #555; font-size: 14px;'>
+                <em>Personalized health advice uses the updated information from 
+                <strong>"Standards of Care in Diabetes—2025"</strong> 
+                (The American Diabetes Association).</em>
+            </div>
+            """,
+            unsafe_allow_html=True
+     )
