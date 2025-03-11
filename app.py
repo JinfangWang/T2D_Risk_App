@@ -10,27 +10,37 @@ from scipy.spatial.distance import cdist
 from PIL import Image
 import base64
 import pinecone
+from pinecone import Pinecone
 from sentence_transformers import SentenceTransformer
 
 
 # Initialize Pinecone and SentenceTransformer model (update your index name)
 pinecone_api_key = st.secrets["PINECONE_API_KEY"]
+#pinecone_api_key = os.getenv("PINECONE_API_KEY") # run locally
+
+# Check for Pinecone API key
 if not pinecone_api_key:
     st.error("🚨 Pinecone API key missing!")
     st.stop()
 
+# Define your Pinecone index name
 index_name = "diabetes-care-standards-2025"  # Your Pinecone index name
-pinecone_env = "us-east-1"  # Your Pinecone environment
 
 try:
-    pinecone.init(api_key=pinecone_api_key, environment=pinecone_env)
-    existing_indexes = pinecone.list_indexes()
+    # Create a Pinecone instance
+    pc = Pinecone(api_key=pinecone_api_key)
 
+    # List available indexes
+    existing_indexes = pc.list_indexes().names()
+
+    # Check if the specified index exists
     if index_name not in existing_indexes:
         st.error(f"🚨 Index '{index_name}' not found! Available indexes: {existing_indexes}")
         st.stop()
 
-    index = pinecone.Index(index_name)
+    # Connect to the Pinecone index
+    index = pc.Index(index_name)
+
 except Exception as e:
     st.error(f"🚨 Error initializing Pinecone: {str(e)}")
     st.stop()
@@ -419,6 +429,7 @@ if submitted:
         st.error("🚨 OpenAI API Key is missing! Add it in Streamlit Secrets.")
     else:
         openai_api_key = st.secrets["OPENAI_API_KEY"]
+        #openai_api_key = os.getenv("OPENAI_API_KEY") # run locally
         if not openai_api_key:
             st.error("🚨 OpenAI API Key missing!")
             st.stop()
