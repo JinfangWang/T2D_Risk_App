@@ -20,13 +20,21 @@ if not pinecone_api_key:
     st.error("🚨 Pinecone API key missing!")
     st.stop()
 
-pc = Pinecone(api_key=pinecone_api_key)
 index_name = "diabetes-care-standards-2025"  # Your new Pinecone index name
-if index_name not in pc.list_indexes().names():
-    st.error(f"🚨 Index '{index_name}' not found!")
+
+pinecone.init(api_key=pinecone_api_key, environment="us-east-1")  # Use correct environment
+
+# List all indexes
+existing_indexes = pinecone.list_indexes()
+
+# Check if the index exists
+if index_name not in existing_indexes:
+    st.error(f"🚨 Index '{index_name}' not found! Available indexes: {existing_indexes}")
     st.stop()
 
-index = pc.Index(index_name)
+# Connect to the index
+index = pinecone.Index(index_name)
+
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
