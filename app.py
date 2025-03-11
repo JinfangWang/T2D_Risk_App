@@ -14,7 +14,7 @@ from sentence_transformers import SentenceTransformer
 
 
 # Initialize Pinecone and SentenceTransformer model (update your index name)
-pinecone_api_key = st.secrets.get("PINECONE_API_KEY")
+pinecone_api_key = st.secrets["PINECONE_API_KEY"]
 if not pinecone_api_key:
     st.error("🚨 Pinecone API key missing!")
     st.stop()
@@ -418,7 +418,7 @@ if submitted:
     if "OPENAI_API_KEY" not in st.secrets:
         st.error("🚨 OpenAI API Key is missing! Add it in Streamlit Secrets.")
     else:
-        openai_api_key = st.secrets.get("OPENAI_API_KEY")
+        openai_api_key = st.secrets["OPENAI_API_KEY"]
         if not openai_api_key:
             st.error("🚨 OpenAI API Key missing!")
             st.stop()
