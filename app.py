@@ -39,8 +39,6 @@ except Exception as e:
 # Load Sentence Transformer model for embeddings
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-
 
 # Set page layout at the beginning (MUST be the first Streamlit command)
 st.set_page_config(layout="centered")  # Or use "wide" if you prefer
