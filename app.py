@@ -10,7 +10,6 @@ from scipy.spatial.distance import cdist
 from PIL import Image
 import base64
 import pinecone
-from pinecone import Pinecone
 from sentence_transformers import SentenceTransformer
 
 
