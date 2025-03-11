@@ -15,25 +15,29 @@ from sentence_transformers import SentenceTransformer
 
 
 # Initialize Pinecone and SentenceTransformer model (update your index name)
-pinecone_api_key = st.secrets["PINECONE_API_KEY"] 
+pinecone_api_key = st.secrets.get("PINECONE_API_KEY")
 if not pinecone_api_key:
     st.error("🚨 Pinecone API key missing!")
     st.stop()
 
-index_name = "diabetes-care-standards-2025"  # Your new Pinecone index name
+index_name = "diabetes-care-standards-2025"  # Your Pinecone index name
+pinecone_env = "us-east-1"  # Your Pinecone environment
 
-pinecone.init(api_key=pinecone_api_key, environment="us-east-1")  # Use correct environment
+try:
+    pinecone.init(api_key=pinecone_api_key, environment=pinecone_env)
+    existing_indexes = pinecone.list_indexes()
 
-# List all indexes
-existing_indexes = pinecone.list_indexes()
+    if index_name not in existing_indexes:
+        st.error(f"🚨 Index '{index_name}' not found! Available indexes: {existing_indexes}")
+        st.stop()
 
-# Check if the index exists
-if index_name not in existing_indexes:
-    st.error(f"🚨 Index '{index_name}' not found! Available indexes: {existing_indexes}")
+    index = pinecone.Index(index_name)
+except Exception as e:
+    st.error(f"🚨 Error initializing Pinecone: {str(e)}")
     st.stop()
 
-# Connect to the index
-index = pinecone.Index(index_name)
+# Load Sentence Transformer model for embeddings
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
