@@ -10,7 +10,7 @@ tensorflow
 shap
 openai
 pinecone
-pinecone-client==2.2.4
+pinecone-client==3.0.0  # Upgrade to the latest stable Pinecone version
 torch
 sentence-transformers==2.2.2  # or the latest stable version that works
 transformers==4.36.2  # or compatible version with sentence-transformers

@@ -10,6 +10,7 @@ from scipy.spatial.distance import cdist
 from PIL import Image
 import base64
 import pinecone
+from pinecone import Pinecone
 from sentence_transformers import SentenceTransformer
 
 
@@ -27,7 +28,7 @@ index_name = "diabetes-care-standards-2025"  # Your Pinecone index name
 
 try:
     # Create a Pinecone instance
-    pc = pinecone.Client(api_key=pinecone_api_key)
+    pc = Pinecone(api_key=pinecone_api_key)
 
     # List available indexes
     existing_indexes = pc.list_indexes().names()
