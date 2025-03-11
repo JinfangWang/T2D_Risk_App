@@ -11,5 +11,7 @@ shap
 openai
 pinecone
 pinecone-client==2.2.4
-sentence-transformers
 torch
+sentence-transformers==2.2.2  # or the latest stable version that works
+transformers==4.36.2  # or compatible version with sentence-transformers
+codecarbon==2.3.2  # Explicitly include CodeCarbon if needed
