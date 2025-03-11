@@ -10,5 +10,5 @@ tensorflow
 shap
 openai
 pinecone
-pinecone-client
+pinecone-client==2.2.4
 sentence-transformers
