@@ -12,3 +12,4 @@ openai
 pinecone
 pinecone-client==2.2.4
 sentence-transformers
+torch

@@ -419,7 +419,11 @@ if submitted:
     if "OPENAI_API_KEY" not in st.secrets:
         st.error("🚨 OpenAI API Key is missing! Add it in Streamlit Secrets.")
     else:
-        openai.api_key = st.secrets["OPENAI_API_KEY"]
+        openai_api_key = st.secrets.get("OPENAI_API_KEY")
+        if not openai_api_key:
+            st.error("🚨 OpenAI API Key missing!")
+            st.stop()
+        openai.api_key = openai_api_key
         cluster_risks = {
             0: "Your metabolic health is currently in a good range, but maintaining a balanced diet and regular exercise will help sustain this condition.",
             1: "You have mild metabolic imbalances, especially in blood pressure and cholesterol. A focus on early lifestyle changes, such as improving diet quality and increasing physical activity, can prevent further risks.",
